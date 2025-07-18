@@ -24,6 +24,13 @@
             </a>
           
           </li>
+               <li class="nav-item">
+            <a href="../vendors" class="nav-link" >
+            <i class="fa-solid fa-truck-field"></i>
+              <p>Vendors Management</p>
+            </a>
+          
+          </li>
            <li class="nav-item">
             <a href="../category" class="nav-link">
             <i class="fa-solid fa-table-cells-large mt-2"></i>

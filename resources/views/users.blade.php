@@ -5,13 +5,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-  <!-- Bootstrap 4 integration -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap4.min.css">
+
   <!-- AdminLTE CSS (optional) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
 
@@ -94,10 +88,23 @@
       background-color: #dc3545;
       color: white;
     }
-    .thead{
-        background-color: 		#4B4B4B;
-        color: white;
+      .edituser{
+      background: green;
+      color:white;
+      border: none;
+      border-radius: 3px;
+      width: 25%;
+    
     }
+    .deleteuser{
+      background: red;
+      color:white;
+      border: none;
+      border-radius: 3px;
+      width: 25%;
+    
+    }
+  
       
 </style>
   <div class="container mt-4">
@@ -105,12 +112,13 @@
       <input type="button" class="createbtn" value="Create User"  onclick="openModal()">
 
       <table class="table table-bordered">
-          <thead class="thead">
+          <thead>
               <tr>
                   <th>S.N</th>
                   <th>Username</th>
                   <th>User Email</th>
                   <th>User Role</th>
+                  <th>Actions</th>
               </tr>
           </thead>
           <tbody>
@@ -119,7 +127,11 @@
                   <td>alisha</td>
                   <td>alisha@example.com</td>
                   <td>Admin</td>
-              </tr>
+                  <td>  
+                    <button onclick="editUser(this)" title="Edit" class="edituser">Edit</button>
+                    <button onclick="deleteUser(this)" title="Delete" class="deleteuser">Delete</button>
+                </td>
+             </tr>
               <!-- more rows -->
           </tbody>
       </table>

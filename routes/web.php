@@ -30,13 +30,18 @@ Route::get('/sales', function () {
     return view('sales');
 });
 Route::get('/report', function () {
-    return view('report');
+    return view('reports');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
-
+Route::get('/vendors', function () {
+    return view('vendors');
+});
+Route::get('/signup', function () {
+    return view('createaccount');
+});
 
 
 

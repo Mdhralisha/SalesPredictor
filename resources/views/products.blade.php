@@ -5,13 +5,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-  <!-- Bootstrap 4 integration -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap4.min.css">
+
   <!-- AdminLTE CSS (optional) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
 
@@ -94,6 +88,22 @@
       background-color: #dc3545;
       color: white;
     }
+     .editproduct{
+      background: green;
+      color:white;
+      border: none;
+      border-radius: 3px;
+      width: 35%;
+    
+    }
+    .deleteproduct{
+      background: red;
+      color:white;
+      border: none;
+      border-radius: 3px;
+      width: 45%;
+    
+    }
 </style>
   <div class="container mt-4">
       <h1 class="userin">Product Details!!</h1>
@@ -109,6 +119,8 @@
                   <th>purchase Rate</th>
                   <th> Sales Rate</th>
                   <th>Category Type</th>
+                  <th>Actions</th>
+                
 
               
               </tr>
@@ -122,6 +134,10 @@
                   <td>25</td>
                   <td>30</td>
                   <td>Beeverage</td>
+                  <td>  
+                    <button onclick="editProduct(this)" title="Edit" class="editproduct">Edit</button>
+                    <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct">Delete</button>
+                </td>
           </tbody>
       </table>
   </div>
