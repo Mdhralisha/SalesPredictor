@@ -17,6 +17,7 @@
         color: #6495ED;
         font-size: 30px;
         margin-bottom: 20px;
+        margin-top: 20px;
     }
     .addproductbtn {
         background-color: #0c337cff;
@@ -104,8 +105,13 @@
       width: 45%;
     
     }
+    .table.table-bordered{
+      background-color: white;
+      box-shadow: 0px 1px 2px gray;
+    }
+  
 </style>
-  <div class="container mt-4">
+  <div class="container pt-4">
       <h1 class="userin">Product Details!!</h1>
       <input type="button" class="addproductbtn" value="ADD PRODUCTS" onclick="openModal()">
 

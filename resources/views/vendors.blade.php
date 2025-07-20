@@ -19,6 +19,7 @@
         color: #6495ED;
         font-size: 30px;
         margin-bottom:20px;
+        margin-top: 20px;
     }
     .createbtn {
         background-color: #0c337cff;
@@ -111,11 +112,16 @@
         font-family: sans-serif;
         font-size: 20px;
     }
+      .table.table-bordered{
+      background-color: white;
+      box-shadow: 0px 1px 2px gray;
+    }
+  
   
   
       
 </style>
-  <div class="container mt-4">
+  <div class="container pt-4">
       <h1 class="userin">Vendors Information !!</h1>
       <input type="button" class="createbtn" value="Create vendor"  onclick="openModal()">
 
