@@ -91,15 +91,16 @@ body{
     <!-- Right Panel with Form -->
      <center>
     <div class="form-section">
-      <form>
+      <form action="{{ route('adminlogin.login') }}" method="POST">
+        @csrf
         <h2>USER LOGIN</h2>
 
     
 
-        <input type="text" id="username" placeholder="Username" required class="inputt">
+        <input type="email" id="username" placeholder="Email" required class="inputt" name="email">
         <br>
 
-        <input type="password" id="password" placeholder="Password" required class="inputt">
+        <input type="password" id="password" placeholder="Password" required class="inputt" name="password">
         <br><br>
 
         <button type="submit" class="submit-btn">Log In</button> <br><br><br>

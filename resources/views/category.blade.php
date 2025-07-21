@@ -116,7 +116,11 @@
   <div class="container pt-4">
       <h1 class="userin">Product Categories !!</h1>
       <input type="button" class="addcategorybtn" value="ADD CATEGORY" onclick="openModal()">
-
+      @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
       <table class="table table-bordered">
           <thead>
               <tr>
@@ -127,22 +131,26 @@
               </tr>
           </thead>
           <tbody>
+            @foreach($categories as $index => $category)
               <tr>
-                  <td>1</td>
-                  <td>Beeverage</td>
+                  <td>{{ $index+1 }}</td>
+                  <td>{{ $category->category_name }}</td>
                   <td>  
                     <button onclick="editCategory(this)" title="Edit" class="editcategory">Edit</button>
                     <button onclick="deleteCategory(this)" title="Delete" class="deletecategory">Delete</button>
                 </td>
+              </tr>
+            @endforeach
           </tbody>
       </table>
   </div>
    <div class="modal" id="userModal">
   <div class="modal-content">
     <h2>Add Category</h2>
-    <form onsubmit="submitForm(event)">
-   
-      <input type="text" id="categoryy" placeholder="Category Name" required>
+    <!-- <form onsubmit="submitForm(event)"> -->
+      <form method="POST" action="{{ route('category.store') }}">
+      @csrf
+      <input type="text" id="categoryy" placeholder="Category Name" name="category_name" required>
      
       <div class="actions">
         <button type="submit" class="btn-submit">ADD</button>

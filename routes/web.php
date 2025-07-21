@@ -8,18 +8,15 @@ Route::get('/', function () {
 Route::get('/base', function () {
     return view('base');
 });
-Route::get('/category', function () {
-    return view('category');
-});
+
+
 Route::get('/adminlogin', function () {
     return view('adminlogin');
 });
 Route::get('/sidebar', function () {
     return view('includes.sidebar');
 });
-Route::get('/users', function () {
-    return view('users');
-});
+
 Route::get('/product', function () {
     return view('products');
 });
@@ -42,8 +39,19 @@ Route::get('/vendors', function () {
 Route::get('/signup', function () {
     return view('createaccount');
 });
+use App\Http\Controllers\CategoryDetailsController;
 
+Route::get('/category', [CategoryDetailsController::class, 'create'])->name('category.create');
+Route::get('/category', [CategoryDetailsController::class, 'index'])->name('category.index');
+Route::post('/category', [CategoryDetailsController::class, 'store'])->name('category.store');
 
+use App\Http\Controllers\UserController;
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::put('/users/{user_details}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user_details}', [UserController::class, 'destroy'])->name('users.destroy');
 
-
-
+Route::get('/adminlogin', function () {
+    return view('adminlogin');
+});
+Route::post('/adminlogin', [UserController::class, 'login'])->name('adminlogin.login');

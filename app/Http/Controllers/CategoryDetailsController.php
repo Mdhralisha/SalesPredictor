@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\category_details;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoryDetailsController extends Controller
 {
@@ -12,7 +14,8 @@ class CategoryDetailsController extends Controller
      */
     public function index()
     {
-        //
+        $categories = category_details::all();
+        return view('category', compact('categories'));
     }
 
     /**
@@ -20,6 +23,7 @@ class CategoryDetailsController extends Controller
      */
     public function create()
     {
+             return view('category.create');
         //
     }
 
@@ -28,7 +32,15 @@ class CategoryDetailsController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+        'category_name' => 'required|string|max:255|unique:category_details,category_name',]);
         //
+        category_details::create([
+        'category_name' => $request->category_name,
+        'created_by' => 1,
+         ]);
+        return redirect()->route('category.index')->with('success', 'Category added successfully!');
+       
     }
 
     /**
