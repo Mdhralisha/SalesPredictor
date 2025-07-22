@@ -17,8 +17,11 @@ Route::get('/sidebar', function () {
     return view('includes.sidebar');
 });
 
-Route::get('/product', function () {
-    return view('products');
+// Route::get('/product', function () {
+//     return view('product');
+// });
+Route::get('/forgetpw', function () {
+    return view('forgetpw');
 });
 Route::get('/purchase', function () {
     return view('purchase');
@@ -55,3 +58,13 @@ Route::get('/adminlogin', function () {
     return view('adminlogin');
 });
 Route::post('/adminlogin', [UserController::class, 'login'])->name('adminlogin.login');
+
+
+use App\Http\Controllers\ProductDetailsController;
+Route::get('/product', [ProductDetailsController::class, 'index'])->name('product.index');
+Route::get('/product/create', [ProductDetailsController::class, 'create'])->name('product.create');
+Route::post('/product', [ProductDetailsController::class, 'store'])->name('product.store');
+Route::get('/product/{product_details}', [ProductDetailsController::class, 'show'])->name('product.show');
+Route::get('/product/{product_details}/edit', [ProductDetailsController::class, 'edit'])->name('product.edit');
+Route::put('/product/{product_details}', [ProductDetailsController::class, 'update'])->name('product.update');
+Route::delete('/product/{product_details}', [ProductDetailsController::class, 'destroy'])->name('product.destroy');

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Stylish Login Form</title>
+  <title> Login Form</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -111,7 +111,7 @@ body{
             <span class="checkmark"></span>
             Remember Me
           </label><br><br>
-          <a href="#">Forgot Password ?</a>
+        <a href="{{ url('forgetpw') }}">Forgot Password ?</a>
         </div>
 
 

@@ -35,8 +35,8 @@ class CategoryDetailsController extends Controller
         $request->validate([
         'category_name' => 'required|string|max:255|unique:category_details,category_name',]);
         //
-        category_details::create([
-        'category_name' => $request->category_name,
+        category_details::create([ //insert data into category_details table
+        'category_name' => $request->category_name, // form ma vareko data haru yo req ma aauxa
         'created_by' => 1,
          ]);
         return redirect()->route('category.index')->with('success', 'Category added successfully!');
