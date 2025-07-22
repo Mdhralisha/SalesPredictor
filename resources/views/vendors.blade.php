@@ -84,11 +84,16 @@
     .btn-submit {
       background-color: #28a745;
       color: white;
+      width: 25% ;
+      margin-left: 40px;
     }
 
     .btn-cancel {
       background-color: #dc3545;
       color: white;
+      width: 25% ;
+      margin-right: 40px;
+
     }
       .editvendor{
       background: green;
@@ -137,32 +142,38 @@
               </tr>
           </thead>
           <tbody>
+            @foreach($vendors as $index => $vendor)
               <tr>
-                  <td>1</td>
-                  <td>alisha</td>
-                  <td>Bhaktapur</td>
-                  <td>1234567890</td>
-                  <td>alisha@example.com</td>
-                  <td>  
-                    <button onclick="editVendor(this)" title="Edit" class="editvendor">Edit</button>
-                    <button onclick="deleteVendor(this)" title="Delete" class="deletevendor">Delete</button>
-                </td>
-                
-             </tr>
+                  <td>{{ $index+1 }}</td>
+                  <td>{{ $vendor->vendor_name }}</td>
+                  <td>{{ $vendor->vendor_address }}</td>
+                  <td>{{ $vendor->vendor_contactno }}</td>
+                  <td>{{ $vendor->vendor_email }}</td>
+                  <td>
+                    <button onclick="editVendor(this)" title="Edit" class="editvendor"  
+                     data-id="{{ $vendor->id }}" 
+                     data-name="{{ $vendor->vendor_name }}"
+                     data-address="{{ $vendor->vendor_address }}"
+                     data-contact="{{ $vendor->vendor_contact }}"
+                     data-email="{{ $vendor->vendor_email }}">Edit</button>
+                    <button onclick="deleteVendor(this)" title="Delete" class="deletevendor" data-id="{{ $vendor->id }}">Delete</button>
+                  </td>
+
+            @endforeach
               
             
           </tbody>
       </table>
   </div>
-
-  <div class="modal" id="userModal">
+ <div class="modal" id="userModal">
   <div class="modal-content">
     <h2>Add Vendor</h2>
-    <form onsubmit="submitForm(event)">
-      <input type="text" id="vendorname" placeholder="Vendor name" required>
-      <input type="text" id="vendoraddress" placeholder="Address" required>
-      <input type="number" id="contact" placeholder="Contact" required>
-      <input type="email" id="email" placeholder="Email" required>
+    <form method="post"  action="{{ route('vendor.store') }}" >
+        @csrf
+      <input type="text" id="vendorname" placeholder="Vendor name" required name="vendor_name">
+      <input type="text" id="vendoraddress" placeholder="Address" required name="vendor_address">
+      <input type="number" id="contact" placeholder="Contact" required name="vendor_contact">
+      <input type="email" id="email" placeholder="Email" required name="vendor_email">
     
       <div class="actions">
         <button type="submit" class="btn-submit" id="submitBtn">Add</button>
@@ -202,86 +213,82 @@
     alert(`User Created:\nName: ${name}\nAddress: ${address}\nContact: ${contact}\nEmail: ${email} `);
     closeModal();
   }
-
-
-
-
-   let currentEditRow = null;
-
-  // Edit Vendor Button Click
   function editVendor(button) {
-    const row = button.closest('tr');
-    currentEditRow = row;
+    const id = button.getAttribute('data-id');
+    const name = button.getAttribute('data-name');
+    const address = button.getAttribute('data-address');
+    const contact = button.getAttribute('data-contact');
+    const email = button.getAttribute('data-email');
 
-    const cells = row.getElementsByTagName('td');
-    document.getElementById('vendorname').value = cells[1].innerText;
-    document.getElementById('vendoraddress').value = cells[2].innerText;
-    document.getElementById('contact').value = cells[3].innerText;
-    document.getElementById('email').value = cells[4].innerText;
-    document.getElementById('submitBtn').innerText = "Update";
+    // Fill modal form
+    document.getElementById('edit_vendorname').value = name;
+    document.getElementById('edit_vendoraddress').value = address;
+    document.getElementById('edit_contact').value = contact;
+    document.getElementById('edit_email').value = email;
+    document.getElementById('edit_vendor_id').value = id;
 
-    // Change modal title
-    document.querySelector('#userModal h2').innerText = "Update Vendor";
-   
+    // Set form action dynamically
+    document.getElementById('editVendorForm').action = '/vendor/' + id;
 
     // Show modal
-    document.getElementById('userModal').style.display = 'block';
+    document.getElementById('editModal').style.display = 'block';
+  }
+  function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
   }
 
 
-  // Override submitForm() to support editing
-  const originalSubmitForm = submitForm;
-
-  submitForm = function (e) {
-    e.preventDefault();
-    const name = document.getElementById('vendorname').value;
-    const address = document.getElementById('vendoraddress').value;
-    const contact = document.getElementById('contact').value;
-    const email = document.getElementById('email').value;
-
-    if (currentEditRow) {
-      // Update row
-      const cells = currentEditRow.getElementsByTagName('td');
-      cells[1].innerText = name;
-      cells[2].innerText = address;
-      cells[3].innerText = contact;
-      cells[4].innerText = email;
-
-      currentEditRow = null;
-      document.querySelector('#userModal h2').innerText = "Add Vendor";
-    } else {
-      // Call original submitForm for new entry
-      originalSubmitForm(e);
-    }
-
-    closeModal();
-  };
-
-
-  let vendorToDelete = null;
-
-// Trigger the delete confirmation modal
-function deleteVendor(button) {
-  vendorToDelete = button.closest('tr');
-  document.getElementById('deleteModal').style.display = 'block';
-}
-
-// Confirm delete
-function confirmDelete() {
-  if (vendorToDelete) {
-    vendorToDelete.remove();
-    vendorToDelete = null;
+  function deleteVendor(button) {
+    const id = button.getAttribute('data-id');
+    document.getElementById('deleteVendorForm').action = '/vendor/' + id;
+    document.getElementById('deleteModal').style.display = 'block';
   }
-  document.getElementById('deleteModal').style.display = 'none';
-}
-
-// Cancel delete
-function cancelDelete() {
-  vendorToDelete = null;
-  document.getElementById('deleteModal').style.display = 'none';
-}
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+  }
   
 </script>
+
+
+
+
+
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h2>Edit Vendors</h2>
+    <form id="editVendorForm" method="POST" action=" ">
+      @csrf
+      @method('PUT')
+      <input type="hidden" id="edit_vendor_id" name="vendor_id">
+      <input type="text" id="edit_vendorname" placeholder="Vendor Name" required name="vendor_name">
+      <input type="text" id="edit_vendoraddress" placeholder="Address" required name="vendor_address">
+      <input type="number" id="edit_contact" placeholder="Contact Number" required name="vendor_contact">
+      <input type="email" id="edit_email" placeholder="Email" required name="vendor_email">
+     
+      <div class="actions">
+        <button type="submit" class="btn-submit">Update</button>
+        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Delete Product Functionality -->
+ <div class="modal" id="deleteModal">
+  <div class="modal-content">
+    
+    <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this Vendor ?</p>
+    <form id="deleteVendorForm" method="POST">
+      @csrf
+      @method('DELETE')
+      <div class="actions">
+        <button type="submit" class="btn-submit" style="background: green; margin-left: 100px;">Delete</button>
+        <button type="button" class="btn-cancel" style="background: red; margin-right: 70px;" onclick="closeDeleteModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
   
 
 

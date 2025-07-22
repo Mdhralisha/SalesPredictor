@@ -25,7 +25,7 @@
           
           </li>
                <li class="nav-item">
-            <a href="../vendors" class="nav-link" >
+            <a href="../vendor" class="nav-link" >
             <i class="fa-solid fa-truck-field"></i>
               <p>Vendors Management</p>
             </a>

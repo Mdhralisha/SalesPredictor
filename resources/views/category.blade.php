@@ -136,7 +136,9 @@
                   <td>{{ $index+1 }}</td>
                   <td>{{ $category->category_name }}</td>
                   <td>  
-                    <button onclick="editCategory(this)" title="Edit" class="editcategory">Edit</button>
+                    <button onclick="editCategory(this)" title="Edit" class="editcategory"  
+                     data-id="{{ $category->id }}" 
+                     data-name="{{ $category->category_name }}">Edit</button>
                     <button onclick="deleteCategory(this)" title="Delete" class="deletecategory">Delete</button>
                 </td>
               </tr>
@@ -176,7 +178,72 @@
     alert(`User added:\nCategory: ${categoryy}`);
     closeModal();
   }
+    function editCategory(button) {
+  const id = button.getAttribute('data-id');
+  const name = button.getAttribute('data-name');
+
+  // Fill modal form
+  document.getElementById('edit_categoryname').value = name;
+
+  // Set form action dynamically
+  document.getElementById('editCategoryForm').action = '/product/' + id;
+
+  // Show modal
+  document.getElementById('editModal').style.display = 'block';
+}
+  
+
+  function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+  }
+
+
+
+
+function deleteCategory(id) {
+  document.getElementById('deleteCategoryForm').action = '/product/' + id;
+  document.getElementById('deleteModal').style.display = 'block';
+}
+
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+  }
+
 </script>
 
+
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h2>Edit Category</h2>
+    <form id="editCategoryForm" method="POST" action=" ">
+      @csrf
+      @method('PUT')
+    
+      <input type="text" id="edit_categoryname" placeholder="Category Name" required name="categoryname">
+     
+      <div class="actions">
+        <button type="submit" class="btn-submit">Update</button>
+        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Delete Product Functionality -->
+ <div class="modal" id="deleteModal">
+  <div class="modal-content">
+    
+    <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this Category?</p>
+    <form id="deleteCategoryForm" method="POST">
+      @csrf
+      @method('DELETE')
+      <div class="actions">
+        <button type="submit" class="btn-submit" style="background: green; margin-left: 100px;">Delete</button>
+        <button type="button" class="btn-cancel" style="background: red; margin-right: 70px;" onclick="closeDeleteModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 @endsection

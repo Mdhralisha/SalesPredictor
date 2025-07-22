@@ -65,6 +65,15 @@ class CategoryDetailsController extends Controller
     public function update(Request $request, category_details $category_details)
     {
         //
+        $request->validate([
+        'categoryname' => 'required|string|max:255'
+    ]);
+
+    //$category = category_details::findOrFail($id);
+    // $category->category_name = $request->categoryname;
+    // $category->save();
+
+    return redirect()->back()->with('success', 'Category updated successfully!');
     }
 
     /**
@@ -73,5 +82,10 @@ class CategoryDetailsController extends Controller
     public function destroy(category_details $category_details)
     {
         //
-    }
+        //   $category = category_details::find($id);
+
+   
+    return redirect()->back()->with('success', 'Category deleted successfully.');
 }
+    }
+

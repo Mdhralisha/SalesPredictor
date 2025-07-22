@@ -36,9 +36,7 @@ Route::get('/report', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
-Route::get('/vendors', function () {
-    return view('vendors');
-});
+
 Route::get('/signup', function () {
     return view('createaccount');
 });
@@ -47,6 +45,9 @@ use App\Http\Controllers\CategoryDetailsController;
 Route::get('/category', [CategoryDetailsController::class, 'create'])->name('category.create');
 Route::get('/category', [CategoryDetailsController::class, 'index'])->name('category.index');
 Route::post('/category', [CategoryDetailsController::class, 'store'])->name('category.store');
+Route::get('/category/{category_details}', [CategoryDetailsController::class, 'show'])->name('category.show');
+Route::put('/category/{category_details}', [CategoryDetailsController::class, 'update'])->name('category.update');
+Route::delete('/category/{category_details}', [CategoryDetailsController::class, 'destroy'])->name('category.destroy');
 
 use App\Http\Controllers\UserController;
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -68,3 +69,11 @@ Route::get('/product/{product_details}', [ProductDetailsController::class, 'show
 Route::get('/product/{product_details}/edit', [ProductDetailsController::class, 'edit'])->name('product.edit');
 Route::put('/product/{product_details}', [ProductDetailsController::class, 'update'])->name('product.update');
 Route::delete('/product/{product_details}', [ProductDetailsController::class, 'destroy'])->name('product.destroy');
+
+use App\Http\Controllers\VendorDetailsController;
+Route::get('/vendor', [VendorDetailsController::class, 'index'])->name('vendor.index');
+Route::get('/vendor/create', [VendorDetailsController::class, 'create'])->name('vendor.create');
+Route::post('/vendor', [VendorDetailsController::class, 'store'])->name('vendor.store');
+Route::get('/vendor/{vendor_details}', [VendorDetailsController::class, 'show'])->name('vendor.show');
+Route::put('/vendor/{vendor_details}', [VendorDetailsController::class, 'update'])->name('vendor.update');
+Route::delete('/vendor/{vendor_details}', [VendorDetailsController::class, 'destroy'])->name(' vendor.destroy');

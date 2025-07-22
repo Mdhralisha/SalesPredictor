@@ -12,7 +12,7 @@
 <style>
     
 body{
-    background-color: white;
+     background: linear-gradient(to right, #cfd1d5ff, #7384a5ff); 
 }
 .form-section {
   background-color: #fff;
