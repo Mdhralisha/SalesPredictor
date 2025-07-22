@@ -139,7 +139,7 @@
                     <button onclick="editCategory(this)" title="Edit" class="editcategory"  
                      data-id="{{ $category->id }}" 
                      data-name="{{ $category->category_name }}">Edit</button>
-                    <button onclick="deleteCategory(this)" title="Delete" class="deletecategory">Delete</button>
+                    <button onclick="deleteCategory(this)" data-id="{{ $category->id }}" title="Delete" class="deletecategory">Delete</button>
                 </td>
               </tr>
             @endforeach
@@ -184,9 +184,10 @@
 
   // Fill modal form
   document.getElementById('edit_categoryname').value = name;
+  document.getElementById('edit_category_id').value = id;
 
   // Set form action dynamically
-  document.getElementById('editCategoryForm').action = '/product/' + id;
+  document.getElementById('editCategoryForm').action = '/category/' + id;
 
   // Show modal
   document.getElementById('editModal').style.display = 'block';
@@ -198,10 +199,9 @@
   }
 
 
-
-
-function deleteCategory(id) {
-  document.getElementById('deleteCategoryForm').action = '/product/' + id;
+function deleteCategory(button) {
+  const id = button.getAttribute('data-id');
+  document.getElementById('deleteCategoryForm').action = '/category/' + id;
   document.getElementById('deleteModal').style.display = 'block';
 }
 
@@ -211,14 +211,14 @@ function deleteCategory(id) {
 
 </script>
 
-
 <div class="modal" id="editModal">
   <div class="modal-content">
     <h2>Edit Category</h2>
-    <form id="editCategoryForm" method="POST" action=" ">
+    <form id="editCategoryForm" method="POST" action="">
       @csrf
       @method('PUT')
     
+      <input type="text" id="edit_category_id" name="id" hidden>
       <input type="text" id="edit_categoryname" placeholder="Category Name" required name="categoryname">
      
       <div class="actions">
@@ -243,7 +243,7 @@ function deleteCategory(id) {
         <button type="button" class="btn-cancel" style="background: red; margin-right: 70px;" onclick="closeDeleteModal()">Cancel</button>
       </div>
     </form>
-  </div>
+</div>
 </div>
 
 @endsection

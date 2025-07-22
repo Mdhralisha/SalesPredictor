@@ -23,7 +23,7 @@ class CategoryDetailsController extends Controller
      */
     public function create()
     {
-             return view('category.create');
+        return view('category.create');
         //
     }
 
@@ -33,14 +33,14 @@ class CategoryDetailsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-        'category_name' => 'required|string|max:255|unique:category_details,category_name',]);
+            'category_name' => 'required|string|max:255|unique:category_details,category_name',
+        ]);
         //
         category_details::create([ //insert data into category_details table
-        'category_name' => $request->category_name, // form ma vareko data haru yo req ma aauxa
-        'created_by' => 1,
-         ]);
+            'category_name' => $request->category_name, // form ma vareko data haru yo req ma aauxa
+            'created_by' => 1,
+        ]);
         return redirect()->route('category.index')->with('success', 'Category added successfully!');
-       
     }
 
     /**
@@ -64,16 +64,15 @@ class CategoryDetailsController extends Controller
      */
     public function update(Request $request, category_details $category_details)
     {
-        //
         $request->validate([
-        'categoryname' => 'required|string|max:255'
-    ]);
+            'categoryname' => 'required|string|max:255'
+        ]);
 
-    //$category = category_details::findOrFail($id);
-    // $category->category_name = $request->categoryname;
-    // $category->save();
+        $category = category_details::findOrFail($request->id);
+        $category->category_name = $request->categoryname;
+        $category->save();
 
-    return redirect()->back()->with('success', 'Category updated successfully!');
+        return redirect()->back()->with('success', 'Category updated successfully!');
     }
 
     /**
@@ -81,11 +80,7 @@ class CategoryDetailsController extends Controller
      */
     public function destroy(category_details $category_details)
     {
-        //
-        //   $category = category_details::find($id);
-
-   
-    return redirect()->back()->with('success', 'Category deleted successfully.');
-}
+        $category_details->delete();
+        return redirect()->back()->with('success', 'Category deleted successfully.');
     }
-
+}
