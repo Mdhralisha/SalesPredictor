@@ -108,7 +108,7 @@
       color:white;
       border: none;
       border-radius: 3px;
-      width: 30%;
+      width: 35%;
     
     }
     .confirm {
@@ -121,14 +121,15 @@
       background-color: white;
       box-shadow: 0px 1px 2px gray;
     }
-  
-  
+   
   
       
 </style>
   <div class="container pt-4">
       <h1 class="userin">Vendors Information !!</h1>
-      <input type="button" class="createbtn" value="Create vendor"  onclick="openModal()">
+
+    
+      <input type="button" class="createbtn" value="Add vendor"  onclick="openModal()">
 
       <table class="table table-bordered">
           <thead>
@@ -154,7 +155,7 @@
                      data-id="{{ $vendor->id }}" 
                      data-name="{{ $vendor->vendor_name }}"
                      data-address="{{ $vendor->vendor_address }}"
-                     data-contact="{{ $vendor->vendor_contact }}"
+                     data-contact="{{ $vendor->vendor_contactno }}"
                      data-email="{{ $vendor->vendor_email }}">Edit</button>
                     <button onclick="deleteVendor(this)" title="Delete" class="deletevendor" data-id="{{ $vendor->id }}">Delete</button>
                   </td>
@@ -180,16 +181,6 @@
         <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
       </div>
     </form>
-  </div>
-</div>
-
-<div class="modal" id="deleteModal">
-  <div class="modal-content">
-    <h4 style="text-align:center;" class="confirm">Are you sure you want to delete this vendor?</h4>
-    <div class="actions" style="justify-content:center;" class="del">
-      <button class="btn-submit" onclick="confirmDelete()" class="del1">Delete</button>
-      <button class="btn-cancel" onclick="cancelDelete()" style="margin-left: 15px;">Cancel</button>
-    </div>
   </div>
 </div>
 
@@ -284,7 +275,7 @@
       @method('DELETE')
       <div class="actions">
         <button type="submit" class="btn-submit" style="background: green; margin-left: 100px;">Delete</button>
-        <button type="button" class="btn-cancel" style="background: red; margin-right: 70px;" onclick="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
       </div>
     </form>
   </div>

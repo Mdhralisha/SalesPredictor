@@ -82,7 +82,7 @@ class ProductDetailsController extends Controller
     {
         //
          $request->validate([
-            'productname' => 'required|string|max:255|unique:product_details,product_name,' . $id,
+            'productname' => 'required|string|max:255|unique:product_details,product_name,',
             'productquantity' => 'required|integer|min:1',
             'productunit' => 'required|string|max:50',
             'purchaserate' => 'required|numeric|min:0',
@@ -90,7 +90,7 @@ class ProductDetailsController extends Controller
             'category' => 'required|exists:category_details,id',
         ]);
 
-        $product = product_details::findOrFail($id);
+        $product = product_details::findOrFail($request->id);
 
         $product->update([
             'product_name' => $request->productname,
@@ -110,12 +110,16 @@ class ProductDetailsController extends Controller
     public function destroy(product_details $product_details)
     {
         //
-         $product = ProductDetails::find($id);
+        $product = product_details::find($product_details->id);
 
-    if (!$product) {
-        return redirect()->route('products.index')->with('error', 'Product not found.');
-    }
+        if (!$product) {
+            return redirect()->route('products.index')->with('error', 'Product not found.');
+        }
 
+        // Check if the product is associated with any purchase details
+        if ($product->purchaseDetails()->count() > 0) {
+            return redirect()->route('products.index')->with('error', 'Cannot delete product with associated purchase details.');
+        }
     $product->delete();
 
     return redirect()->route('products.index')->with('success', 'Product deleted successfully!');

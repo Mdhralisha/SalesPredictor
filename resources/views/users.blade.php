@@ -128,17 +128,22 @@
               </tr>
           </thead>
           <tbody>
-              <tr>
-                  <td>1</td>
-                  <td>alisha</td>
-                  <td>alisha@example.com</td>
-                  <td>Admin</td>
-                  <td>  
-                    <button onclick="editUser(this)" title="Edit" class="edituser">Edit</button>
-                    <button onclick="deleteUser(this)" title="Delete" class="deleteuser">Delete</button>
-                </td>
-             </tr>
-              <!-- more rows -->
+            @foreach ($users as $index => $user)
+    <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $user->name }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->user_role }}</td>
+        <td>
+            <button class="edituser" onclick="editUser(this)"
+        data-id="{{ $user->id }}"
+        data-name="{{ $user->name }}"
+        data-email="{{ $user->email }}"
+        data-role="{{ $user->user_role }}">Edit</button>
+            <button class="deleteuser" onclick="alert('Delete User: {{ $user->name }}')">Delete</button>
+    </tr>
+    @endforeach
+             
           </tbody>
       </table>
   </div>
@@ -146,10 +151,11 @@
   <div class="modal" id="userModal">
   <div class="modal-content">
     <h2>Create User</h2>
-    <form onsubmit="submitForm(event)">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <select id="role" required>
+    <form onsubmit="submitForm(event)" action="{{ route('users.store') }}" method="POST">
+        @csrf
+      <input type="text" id="username" placeholder="Username" required name="username">
+      <input type="email" id="email" placeholder="Email" required name="email">
+      <select id="role" required name="role">
         <option value="">Select Role</option>
         <option value="Admin">Admin</option>
         <option value="User">User</option>
@@ -180,7 +186,77 @@
     alert(`User Created:\nName: ${name}\nEmail: ${email}\nRole: ${role}`);
     closeModal();
   }
+
+ function editUser(button) {
+    const id = button.getAttribute('data-id');
+    const name = button.getAttribute('data-name');
+    const email = button.getAttribute('data-email');
+    const role = button.getAttribute('data-role');
+
+    document.getElementById('edit_user_id').value = id;
+    document.getElementById('edit_usernamee').value = name;
+    document.getElementById('edit_useremail').value = email;
+    document.getElementById('edit_userrole').value = role; // This selects the current role
+
+    document.getElementById('editModal').style.display = 'block';
+}
+
+  function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+  }
+
+  function deleteUser(button) {
+    const id = button.getAttribute('data-id');
+    document.getElementById('deleteForm').action = '/users/' + id;
+    document.getElementById('deleteModal').style.display = 'block';
+  }
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+  }
+
+
 </script>
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h2>Edit Users</h2>
+    <form id="editProductForm" method="POST" action=" ">
+      @csrf
+      @method('PUT')
+      <input type="hidden" id="edit_user_id" name="user_id">
+      <input type="text" id="edit_usernamee" placeholder="User Name" required name="username">
+      <input type="email" id="edit_useremail" placeholder="Email" required name="useremail">
+      
+     <select id="edit_userrole" name="userrole" required>
+    <option value="">Select Role</option>
+    <option value="Admin" {{ old('userrole') == 'Admin' ? 'selected' : '' }}>Admin</option>
+    <option value="User" {{ old('userrole') == 'User' ? 'selected' : '' }}>User</option>
+    </select>
+
+      <div class="actions">
+        <button type="submit" class="btn-submit">Update</button>
+        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Delete Product Functionality -->
+ <div class="modal" id="deleteModal">
+  <div class="modal-content">
+    
+    <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this user?</p>
+    <form id="deleteForm" method="POST">
+      @csrf
+      @method('DELETE')
+      <div class="actions">
+        <button type="submit" class="btn-submit" style="background: green; margin-left: 100px;">Delete</button>
+        <button type="button" class="btn-cancel" style="background: red; margin-right: 70px;" onclick="closeDeleteModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+  
   
 
 

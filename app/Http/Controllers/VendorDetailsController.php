@@ -74,7 +74,7 @@ class VendorDetailsController extends Controller
      */
     public function update(Request $request, vendor_details $vendor_details)
     {
-        //
+        //  dd($request->all());
         $request->validate([
         'vendor_id' => 'required|exists:vendor_details,id',
         'vendor_name' => 'required|string|max:255',
@@ -87,7 +87,7 @@ class VendorDetailsController extends Controller
     $vendor->update([
         'vendor_name' => $request->vendor_name,
         'vendor_address' => $request->vendor_address,
-        'vendor_contact' => $request->vendor_contact,
+        'vendor_contactno' => $request->vendor_contact,
         'vendor_email' => $request->vendor_email,
     ]);
 
@@ -99,6 +99,14 @@ class VendorDetailsController extends Controller
      */
     public function destroy(vendor_details $vendor_details)
     {
-        //
+        $vendor = vendor_details::find($vendor_details->id);
+
+        if (!$vendor) {
+            return redirect()->route('vendor.index')->with('error', 'Vendor not found.');
+        }
+
+        $vendor->delete();
+
+        return redirect()->route('vendor.index')->with('success', 'Vendor deleted successfully!');
     }
 }

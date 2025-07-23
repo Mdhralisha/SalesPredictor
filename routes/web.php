@@ -23,6 +23,9 @@ Route::get('/sidebar', function () {
 Route::get('/forgetpw', function () {
     return view('forgetpw');
 });
+Route::get('/changepw', function () {
+    return view('changepw');
+}) ->name('changepw');
 Route::get('/purchase', function () {
     return view('purchase');
 });
