@@ -1,188 +1,195 @@
 @extends('base')
 
 @section('styles')
-  <!-- Bootstrap 4 CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- Bootstrap 4 CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-  <!-- AdminLTE CSS (optional) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+<!-- AdminLTE CSS (optional) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
 
 @endsection
 @section('content')
 <style>
-    .userin {
-        text-align: center;
-        color: #6495ED;
-        font-size: 30px;
-        margin-bottom: 20px;
-        margin-top: 20px;
-    }
-    .addproductbtn {
-        background-color: #0c337cff;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-bottom: 20px;
-        margin-left:920px;
-        width: 15%;
-    }
-       .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999; /* Ensure it's on top */
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-    }
-    
+  .userin {
+    text-align: center;
+    color: #6495ED;
+    font-size: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
 
-    /* Modal Box */
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 8px;
-      width: 400px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      position: relative;
-    }
+  .addproductbtn {
+    background-color: #0c337cff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: 920px;
+    width: 15%;
+  }
 
-    .modal-content h2 {
-      margin-top: 0;
-      text-align: center;
-    }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    /* Ensure it's on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
 
-    .modal-content input,
-    .modal-content select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
 
-    .modal-content .actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-    }
+  /* Modal Box */
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
 
-    .modal-content .actions button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+  .modal-content h2 {
+    margin-top: 0;
+    text-align: center;
+  }
 
-    .btn-submit {
-      background-color: #28a745;
-      color: white;
-    }
+  .modal-content input,
+  .modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
 
-    .btn-cancel {
-      background-color: #dc3545;
-      color: white;
-    }
-     .editproduct{
-      background: green;
-      color:white;
-      border: none;
-      border-radius: 3px;
-      width: 35%;
-    
-    }
-    .deleteproduct{
-      background: red;
-      color:white;
-      border: none;
-      border-radius: 3px;
-      width: 45%;
-    
-    }
-    .table.table-bordered{
-      background-color: white;
-      box-shadow: 0px 1px 2px gray;
-    }
-  
+  .modal-content .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .modal-content .actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-submit {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .editproduct {
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 35%;
+
+  }
+
+  .deleteproduct {
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 45%;
+
+  }
+
+  .table.table-bordered {
+    background-color: white;
+    box-shadow: 0px 1px 2px gray;
+  }
+
 </style>
-  <div class="container pt-4">
-      <h1 class="userin">Product Details!!</h1>
-      <input type="button" class="addproductbtn" value="ADD PRODUCTS" onclick="openModal()">
+<div class="container pt-4">
+  <h1 class="userin">Product Details!!</h1>
+  <input type="button" class="addproductbtn" value="ADD PRODUCTS" onclick="openModal()">
+  <div style="height: 60vh;overflow-y:scroll">
+  <table class="table table-bordered">
+    <thead>
 
-      <table class="table table-bordered">
-          <thead>
-          
-              <tr>
-                  <th>S.N</th>
-                  <th>Product Name</th>
-                  <th>Product Quantity</th>
-                  <th>Product Unit</th>
-                  <th>purchase Rate</th>
-                  <th> Sales Rate</th>
-                  <th>Category Type</th>
-                  <th>Actions</th>
-                
+      <tr>
+        <th>S.N</th>
+        <th>Product Name</th>
+        <th>Product Quantity</th>
+        <th>Product Unit</th>
+        <th>purchase Rate</th>
+        <th> Sales Rate</th>
+        <th>Category Type</th>
+        <th>Actions</th>
 
-              
-              </tr>
-          </thead>
-          <tbody>
-             @foreach($products as $index => $product)
-          <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ $product->product_name }}</td>
-            <td>{{ $product->product_quantity }}</td>
-            <td>{{ $product->product_unit }}</td>
-            <td>{{ $product->product_rate }}</td>
-            <td>{{ $product->sales_rate }}</td>
-            <td>{{ $product->category->category_name }}</td> <!-- Make sure you have relationship set up -->
-            <td>  
-            <button onclick="editProduct(this)" title="Edit" class="editproduct"
-                
-                    data-id="{{ $product->id }}"
-                    data-name="{{ $product->product_name }}"
-                    data-qty="{{ $product->product_quantity }}"
-                    data-unit="{{ $product->product_unit }}"
-                    data-prate="{{ $product->product_rate }}"
-                    data-srate="{{ $product->sales_rate }}"
-                    data-category="{{ $product->category_id }}">Edit</button>
-                <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct" 
-                    data-id="{{ $product->id }}" >Delete</button>
-            </td>
-            </tr>
-            @endforeach
-          </tbody>
-      </table>
-  </div>
-   <div class="modal" id="userModal">
+
+
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($products as $index => $product)
+      <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $product->product_name }}</td>
+        <td>{{ $product->product_quantity }}</td>
+        <td>{{ $product->product_unit }}</td>
+        <td>{{ $product->product_rate }}</td>
+        <td>{{ $product->sales_rate }}</td>
+        <td>{{ $product->category->category_name }}</td> <!-- Make sure you have relationship set up -->
+        <td>
+          <button onclick="editProduct(this)" title="Edit" class="editproduct"
+
+            data-id="{{ $product->id }}"
+            data-name="{{ $product->product_name }}"
+            data-qty="{{ $product->product_quantity }}"
+            data-unit="{{ $product->product_unit }}"
+            data-prate="{{ $product->product_rate }}"
+            data-srate="{{ $product->sales_rate }}"
+            data-category="{{ $product->category_id }}">Edit</button>
+          <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct"
+            data-id="{{ $product->id }}">Delete</button>
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+</div>
+<div class="modal" id="userModal">
   <div class="modal-content">
     <h2>Add New Product</h2>
-    <form  action="{{ route('product.store') }}" method="POST">
+    <form action="{{ route('product.store') }}" method="POST">
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
       <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity">
-   
-        <select id="productunit" name="productunit" required>
-        <option value="">Select Product Unit</option>
-      <option value="kg">Kg</option>
-      <option value="litre">Litre</option>  
-      <option value="pcs">Pcs</option>
 
-    
+      <select id="productunit" name="productunit" required>
+        <option value="">Select Product Unit</option>
+        <option value="kg">Kg</option>
+        <option value="litre">Litre</option>
+        <option value="pcs">Pcs</option>
+
+
       </select>
       <input type="number" id="purchaserate" placeholder="Purchase Rate" required name="purchaserate">
       <input type="number" id="salesrate" placeholder="Sales Rate" required name="salesrate">
       <select id="categorytype" name="category" required>
         <option value="">Select Category</option>
         @foreach($categories as $category)
-      <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-    @endforeach
+        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        @endforeach
       </select>
       <div class="actions">
         <button type="submit" class="btn-submit">ADD</button>
@@ -216,7 +223,7 @@
 
 
   function editProduct(button) {
-    
+
     const id = button.getAttribute('data-id');
     const name = button.getAttribute('data-name');
     const qty = button.getAttribute('data-qty');
@@ -271,7 +278,7 @@
       <input type="hidden" id="edit_product_id" name="product_id">
       <input type="text" id="edit_productname" placeholder="Product Name" required name="productname">
       <input type="number" id="edit_productquantity" placeholder="Quantity" required name="productquantity">
-    
+
       <select id="edit_productunit" name="productunit" required>
         <option value="">Select Units</option>
         <option value="kg">Kg</option>
@@ -283,7 +290,7 @@
       <select id="edit_categorytype" name="category" required>
         <option value="">Select Category</option>
         @foreach($categories as $category)
-          <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
         @endforeach
       </select>
       <div class="actions">
@@ -296,9 +303,9 @@
 
 
 <!-- Delete Product Functionality -->
- <div class="modal" id="deleteModal">
+<div class="modal" id="deleteModal">
   <div class="modal-content">
-    
+
     <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this product?</p>
     <form id="deleteProductForm" method="POST">
       @csrf
@@ -310,8 +317,8 @@
     </form>
   </div>
 </div>
-  
-  
+
+
 
 
 @endsection
