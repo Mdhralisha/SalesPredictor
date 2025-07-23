@@ -152,7 +152,8 @@
                     data-prate="{{ $product->product_rate }}"
                     data-srate="{{ $product->sales_rate }}"
                     data-category="{{ $product->category_id }}">Edit</button>
-                <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct">Delete</button>
+                <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct" 
+                    data-id="{{ $product->id }}" >Delete</button>
             </td>
             </tr>
             @endforeach
@@ -166,7 +167,15 @@
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
       <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity">
-      <input type="text" id="productunit" placeholder="Product Unit" required name="productunit">
+   
+        <select id="productunit" name="productunit" required>
+        <option value="">Select Product Unit</option>
+      <option value="kg">Kg</option>
+      <option value="litre">Litre</option>  
+      <option value="pcs">Pcs</option>
+
+    
+      </select>
       <input type="number" id="purchaserate" placeholder="Purchase Rate" required name="purchaserate">
       <input type="number" id="salesrate" placeholder="Sales Rate" required name="salesrate">
       <select id="categorytype" name="category" required>
@@ -239,8 +248,9 @@
 
 
 
-  function deleteProduct(id) {
+  function deleteProduct(button) {
     // Set action URL
+    const id = button.getAttribute('data-id');
     const form = document.getElementById('deleteProductForm');
     form.action = '/product/' + id;
 
@@ -255,13 +265,19 @@
 <div class="modal" id="editModal">
   <div class="modal-content">
     <h2>Edit Product</h2>
-    <form id="editProductForm" method="POST" action=" ">
+    <form id="editProductForm" method="POST">
       @csrf
       @method('PUT')
       <input type="hidden" id="edit_product_id" name="product_id">
       <input type="text" id="edit_productname" placeholder="Product Name" required name="productname">
       <input type="number" id="edit_productquantity" placeholder="Quantity" required name="productquantity">
-      <input type="text" id="edit_productunit" placeholder="Product Unit" required name="productunit">
+    
+      <select id="edit_productunit" name="productunit" required>
+        <option value="">Select Units</option>
+        <option value="kg">Kg</option>
+        <option value="litre">Litre</option>
+        <option value="pcs">Pcs</option>
+      </select>
       <input type="number" id="edit_purchaserate" placeholder="Purchase Rate" required name="purchaserate">
       <input type="number" id="edit_salesrate" placeholder="Sales Rate" required name="salesrate">
       <select id="edit_categorytype" name="category" required>
