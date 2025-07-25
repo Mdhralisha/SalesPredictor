@@ -130,7 +130,7 @@
 
     
       <input type="button" class="createbtn" value="Add vendor"  onclick="openModal()">
-
+  <div style="height: 60vh;overflow-y:scroll">
       <table class="table table-bordered">
           <thead>
               <tr>
@@ -165,6 +165,7 @@
             
           </tbody>
       </table>
+      </div>
   </div>
  <div class="modal" id="userModal">
   <div class="modal-content">

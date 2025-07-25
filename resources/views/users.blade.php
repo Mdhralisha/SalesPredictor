@@ -116,7 +116,7 @@
       <h1 class="userin">Users Information !!</h1>
      
       <input type="button" class="createbtn" value="Create User"  onclick="openModal()">
-
+  <div style="height: 60vh;overflow-y:scroll">
       <table class="table table-bordered">
           <thead>
               <tr>
@@ -146,6 +146,7 @@
              
           </tbody>
       </table>
+      </div>
   </div>
 
   <div class="modal" id="userModal">

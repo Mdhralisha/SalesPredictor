@@ -121,6 +121,7 @@
               {{ session('success') }}
           </div>
       @endif
+      <div style="height: 60vh;overflow-y:scroll">
       <table class="table table-bordered">
           <thead>
               <tr>
@@ -145,6 +146,7 @@
             @endforeach
           </tbody>
       </table>
+      </div>
   </div>
    <div class="modal" id="userModal">
   <div class="modal-content">
