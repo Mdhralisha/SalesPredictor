@@ -13,6 +13,7 @@
     
 body{
      background: linear-gradient(to right, #cfd1d5ff, #7384a5ff); 
+     overflow: hidden;
 }
 .form-section {
   background-color: #fff;
@@ -122,6 +123,7 @@ body{
 
   <!-- Font Awesome (for icons) -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </body>
 </html>
 

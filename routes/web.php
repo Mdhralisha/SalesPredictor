@@ -39,6 +39,9 @@ Route::get('/report', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+Route::get('/test', function () {
+    return view('test');
+});
 
 Route::get('/signup', function () {
     return view('createaccount');
