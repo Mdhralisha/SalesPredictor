@@ -26,9 +26,9 @@ Route::get('/forgetpw', function () {
 Route::get('/changepw', function () {
     return view('changepw');
 }) ->name('changepw');
-Route::get('/purchase', function () {
-    return view('purchase');
-});
+// // Route::get('/purchase', function () {
+// //     return view('purchase');
+// });
 Route::get('/sales', function () {
     return view('sales');
 });
@@ -83,3 +83,15 @@ Route::post('/vendor', [VendorDetailsController::class, 'store'])->name('vendor.
 Route::get('/vendor/{vendor_details}', [VendorDetailsController::class, 'show'])->name('vendor.show');
 Route::put('/vendor/{vendor_details}', [VendorDetailsController::class, 'update'])->name('vendor.update');
 Route::delete('/vendor/{vendor_details}', [VendorDetailsController::class, 'destroy'])->name(' vendor.destroy');
+
+use App\Http\Controllers\PurchaseDetailsController;
+Route::get('/purchase', [PurchaseDetailsController::class, 'index'])->name('purchase.index');
+Route::get('/purchase/create', [PurchaseDetailsController::class, 'create'])->name('purchase.create');
+Route::post('/purchase', [PurchaseDetailsController::class, 'store'])->name('purchase.store');
+
+Route::put('/purchase/{purchase_details}', [PurchaseDetailsController::class, 'update'])->name('purchase.update');
+Route::delete('/purchase/{purchase_details}', [PurchaseDetailsController::class, 'destroy'])->name('purchase.destroy');
+Route::get('/get-products-by-vendor/{vendor_id}', [PurchaseDetailsController::class, 'getProductsByVendor']);
+Route::get('/get-product-price/{product_id}', [PurchaseDetailsController::class, 'getProductDetails']);
+
+Route::post('/purchases/save-multiple', [PurchaseDetailsController::class, 'saveMultiple'])->name('purchase.saveMultiple');

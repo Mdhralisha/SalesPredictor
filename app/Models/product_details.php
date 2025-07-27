@@ -14,6 +14,7 @@ class product_details extends Model
         'category_id',
         'created_by',
         'product_unit',
+        'vendor_id',
     ];
 
     public function user()
@@ -24,4 +25,10 @@ class product_details extends Model
 {
     return $this->belongsTo(category_details::class, 'category_id');
 }
+    public function vendor()
+    {
+        return $this->belongsTo('App\Models\Vendor', 'vendor_id');
+    }
+    
+   
 }
