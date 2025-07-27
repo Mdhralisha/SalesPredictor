@@ -19,7 +19,7 @@
           </li>
           <li class="nav-item">
             <a href="../users" class="nav-link" >
-             <i class="fa-solid fa-users"mt-2></i>
+             <i class="fa-solid fa-circle-user mt-2"></i>
               <p>User Management</p>
             </a>
           
@@ -41,6 +41,12 @@
             <a href="../product" class="nav-link">
             <i class="fa-brands fa-product-hunt"></i>
               <p> Product Management</p>
+            </a>
+           </li>
+           <li class="nav-item">
+            <a href="../customer" class="nav-link">
+           <i class="fa-solid fa-users"mt-2></i>
+              <p> Customer Management</p>
             </a>
            </li>
             <li class="nav-item">

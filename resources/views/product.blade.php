@@ -42,19 +42,22 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
+
   }
 
 
   /* Modal Box */
   .modal-content {
     background-color: #fff;
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 20px;
     border-radius: 8px;
     width: 400px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
   }
+
+
 
   .modal-content h2 {
     margin-top: 0;
@@ -107,7 +110,7 @@
     color: white;
     border: none;
     border-radius: 3px;
-    width: 45%;
+    width: 55%;
 
   }
 
@@ -126,12 +129,13 @@
 
       <tr>
         <th>S.N</th>
-        <th>Product Name</th>
-        <th>Product Quantity</th>
-        <th>Product Unit</th>
-        <th>purchase Rate</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Unit</th>
+        <th>Purchase Rate</th>
         <th> Sales Rate</th>
         <th>Category Type</th>
+        <th>Vendor</th>
         <th>Actions</th>
 
 
@@ -147,7 +151,8 @@
         <td>{{ $product->product_unit }}</td>
         <td>{{ $product->product_rate }}</td>
         <td>{{ $product->sales_rate }}</td>
-        <td>{{ $product->category->category_name }}</td> <!-- Make sure you have relationship set up -->
+        <td>{{ $product->category->category_name }}</td> 
+        <td>{{ $product->vendor->vendor_name }}</td> 
         <td>
           <button onclick="editProduct(this)" title="Edit" class="editproduct"
 
@@ -157,7 +162,9 @@
             data-unit="{{ $product->product_unit }}"
             data-prate="{{ $product->product_rate }}"
             data-srate="{{ $product->sales_rate }}"
-            data-category="{{ $product->category_id }}">Edit</button>
+            data-category="{{ $product->category_id }}"
+            data-vendor="{{ $product->vendor_id }}"
+            >Edit</button>
           <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct"
             data-id="{{ $product->id }}">Delete</button>
         </td>
@@ -170,7 +177,8 @@
 <div class="modal" id="userModal">
   <div class="modal-content">
     <h2>Add New Product</h2>
-    <form action="{{ route('product.store') }}" method="POST">
+    
+     <form action="{{ route('product.store') }}" method="POST">
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
       <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity">
@@ -191,11 +199,18 @@
         <option value="{{ $category->id }}">{{ $category->category_name }}</option>
         @endforeach
       </select>
+        <select id="vendor" name="vendor" required>
+        <option value="">Select Vendors</option>
+        @foreach($vendors as $vendor)
+        <option value="{{ $vendor->id }}">{{ $vendor->vendor_name }}</option>
+        @endforeach
+      </select>
       <div class="actions">
         <button type="submit" class="btn-submit">ADD</button>
         <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
       </div>
     </form>
+    
   </div>
 </div>
 
@@ -216,8 +231,9 @@
     const prate = document.getElementById('purchaserate').value;
     const salesrate = document.getElementById('salesrate').value;
     const categorytype = document.getElementById('categorytype').value;
+    const vendor = document.getElementById('vendor').value;
 
-    alert(`User Created:\nName: ${name}\nQuantity: ${quantity}\nUnit: ${unit}\nPurchase Rate: ${prate}\nSales Rate: ${salesrate}\nCategory Type: ${categorytype}`);
+    alert(`User Created:\nName: ${name}\nQuantity: ${quantity}\nUnit: ${unit}\nPurchase Rate: ${prate}\nSales Rate: ${salesrate}\nCategory Type: ${categorytype}\nVendor: ${vendor}`);
     closeModal();
   }
 
@@ -231,6 +247,7 @@
     const prate = button.getAttribute('data-prate');
     const srate = button.getAttribute('data-srate');
     const category = button.getAttribute('data-category');
+    const vendor = button.getAttribute('data-vendor');
 
     // Fill modal form
     document.getElementById('edit_product_id').value = id;
@@ -240,7 +257,7 @@
     document.getElementById('edit_purchaserate').value = prate;
     document.getElementById('edit_salesrate').value = srate;
     document.getElementById('edit_categorytype').value = category;
-
+    document.getElementById('edit_vendor').value = vendor;
     // Set form action dynamically
     document.getElementById('editProductForm').action = '/product/' + id;
 
@@ -293,6 +310,13 @@
         <option value="{{ $category->id }}">{{ $category->category_name }}</option>
         @endforeach
       </select>
+
+      <select id="edit_vendor" name="vendor" required>
+  <option value="">Select Vendor</option>
+  @foreach($vendors as $vendor)
+    <option value="{{ $vendor->id }}">{{ $vendor->vendor_name }}</option>
+  @endforeach
+</select>
       <div class="actions">
         <button type="submit" class="btn-submit">Update</button>
         <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>

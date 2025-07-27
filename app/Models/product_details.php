@@ -27,7 +27,7 @@ class product_details extends Model
 }
     public function vendor()
     {
-        return $this->belongsTo('App\Models\Vendor', 'vendor_id');
+        return $this->belongsTo('App\Models\vendor_details', 'vendor_id');
     }
     
    

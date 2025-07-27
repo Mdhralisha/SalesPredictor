@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\product_details;
 use Illuminate\Http\Request;
 use App\Models\category_details;
+use App\Models\vendor_details;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
 
 class ProductDetailsController extends Controller
 {
@@ -17,7 +19,8 @@ class ProductDetailsController extends Controller
     {
     $products = product_details::with('category')->get(); // Eager load the category
     $categories = category_details::all();
-    return view('product', compact('products', 'categories'));;
+    $vendors = vendor_details::all(); // Assuming you have a vendor_details model
+    return view('product', compact('products', 'categories','vendors'));;
     }
 
     /**
@@ -42,6 +45,7 @@ class ProductDetailsController extends Controller
             'salesrate' => 'required|numeric|min:0',
             'category' => 'required|exists:category_details,id',
             'productunit' => 'required|string|max:50',
+            'vendor' => 'required|exists:vendor_details,id', // Ensure vendor exists
         ]);
         try {
             product_details::create([
@@ -52,6 +56,7 @@ class ProductDetailsController extends Controller
                 'category_id' => $request->category,
                 'created_by' => 1,
                 'product_unit' => $request->productunit,
+                'vendor_id' => $request->vendor, // Save vendor ID
             ]);
         } catch (\Exception $e) {
             dd('Error saving product:'. $e->getMessage());
@@ -80,15 +85,15 @@ class ProductDetailsController extends Controller
      */
     public function update(Request $request, product_details $product_details)
     {
-        // dd($request->all());
+        //dd($request->all());
          $request->validate([
             'product_id' => 'required',
             'productname' => 'required|string|max:255',
             'productquantity' => 'required|integer|min:1',
             'productunit' => 'required|string|max:50',
             'purchaserate' => 'required|numeric|min:0',
-            'salesrate' => 'required|numeric|min:0',
             'category' => 'required',
+            'salesrate' => 'required|numeric|min:0',
         ]);
 
         $product = product_details::findOrFail($request->product_id);
@@ -100,6 +105,7 @@ class ProductDetailsController extends Controller
             'product_rate' => $request->purchaserate,
             'sales_rate' => $request->salesrate,
             'category_id' => $request->category,
+             'vendor_id' => $request->vendor, // Update vendor ID
         ]);
 
         return redirect()->route('product.index')->with('success', 'Product updated successfully!');

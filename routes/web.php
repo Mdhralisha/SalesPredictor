@@ -39,9 +39,9 @@ Route::get('/report', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
-Route::get('/test', function () {
-    return view('test');
-});
+// Route::get('/customers', function () {
+//     return view('customers');
+// });
 
 Route::get('/signup', function () {
     return view('createaccount');
@@ -95,3 +95,11 @@ Route::get('/get-products-by-vendor/{vendor_id}', [PurchaseDetailsController::cl
 Route::get('/get-product-price/{product_id}', [PurchaseDetailsController::class, 'getProductDetails']);
 
 Route::post('/purchases/save-multiple', [PurchaseDetailsController::class, 'saveMultiple'])->name('purchase.saveMultiple');
+
+use App\Http\Controllers\CustomerDetailsController;
+Route::get('/customer', [CustomerDetailsController::class, 'index'])->name('customer.index');
+Route::get('/customer/create', [CustomerDetailsController::class, 'create'])->name('customer.create');
+Route::post('/customer', [CustomerDetailsController::class, 'store'])->name('customer.store');
+Route::get('/customer/{customer_details}', [CustomerDetailsController::class, 'show'])->name('customer.show');
+Route::put('/customer/{customer_details}', [CustomerDetailsController::class, 'update'])->name('customer.update');
+Route::delete('/customer/{customer_details}', [CustomerDetailsController::class, 'destroy'])->name('customer.destroy');

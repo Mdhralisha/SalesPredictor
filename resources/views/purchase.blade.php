@@ -95,9 +95,7 @@
             <tbody>
                 <!-- Existing purchase rows will be here -->
                 @foreach ($purchaseDetails as $index => $purchase)
-
-                @endforeach
-                <tr>
+             <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $purchase->invoice_no }}</td>
                     <td>{{ $purchase->product->product_name ?? 'N/A' }}</td>
@@ -110,6 +108,8 @@
                         <button onclick="deletePurchase(this)" class="deletepurchase">Delete</button>
                     </td>
                 </tr>
+                @endforeach
+            
             </tbody>
         </table>
     </div>
