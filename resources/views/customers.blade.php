@@ -23,6 +23,7 @@
         color: #6495ED;
         font-size: 30px;
         margin-bottom: 20px;
+      
     }
 
     .createbtn {
@@ -120,7 +121,7 @@
         box-shadow: 0px 1px 2px gray;
     }
 </style>
-<div class="container mt-4">
+<div class="container pt-4" >
     <h1 class="userin">Customers Information !!</h1>
     <input type="button" class="createbtn" value="Add Customer" onclick="openModal()">
     <div style="height: 60vh;overflow-y:scroll">

@@ -103,3 +103,13 @@ Route::post('/customer', [CustomerDetailsController::class, 'store'])->name('cus
 Route::get('/customer/{customer_details}', [CustomerDetailsController::class, 'show'])->name('customer.show');
 Route::put('/customer/{customer_details}', [CustomerDetailsController::class, 'update'])->name('customer.update');
 Route::delete('/customer/{customer_details}', [CustomerDetailsController::class, 'destroy'])->name('customer.destroy');
+
+use App\Http\Controllers\SalesDetailsController;
+Route::get('/sales', [SalesDetailsController::class, 'index'])->name('sales.index');
+Route::get('/sales/create', [SalesDetailsController::class, 'create'])->name    ('sales.create');
+Route::post('/sales', [SalesDetailsController::class, 'store'])->name('sales.store');
+Route::get('/sales/{sales_details}', [SalesDetailsController::class, 'show'])->name('sales.show');
+Route::put('/sales/{sales_details}', [SalesDetailsController::class, 'update'])->name('sales.update');
+Route::delete('/sales/{sales_details}', [SalesDetailsController::class, 'destroy'])->name('sales.destroy');
+Route::post('/saveMultiple', [SalesDetailsController::class, 'saveMultiple'])->name('sales.saveMultiple');
+Route::get('/get-product-sale-price/{id}', [SalesDetailsController::class, 'getProductSalePrice']);

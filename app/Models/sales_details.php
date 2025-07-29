@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
 
 class sales_details extends Model
 {
@@ -18,5 +19,13 @@ class sales_details extends Model
         'product_id', // Assuming a product ID for sales details
         'user_id', // Assuming this is the user who created the sales record
     ];
+
+
+    public function product()    {
+        return $this->belongsTo(product_details::class, 'product_id');
+    }
+        public function customer()    {
+        return $this->belongsTo(Customer_details::class, 'customer_id');
+    }
 
 }
