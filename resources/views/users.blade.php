@@ -15,12 +15,12 @@
 
     .userin {
         text-align: center;
-        color: #6495ED;
+         color: #0c337c;
         font-size: 30px;
         margin-bottom:20px;
         margin-top: 20px;
     }
-    .createbtn {
+    /* .createbtn {
         background-color: #0c337cff;
         color: white;
         padding: 10px 20px;
@@ -30,6 +30,15 @@
         margin-bottom: 20px;
         margin-left:920px;
         width: 15%;
+    } */
+          .createbtn{
+       background-color: #0c337cff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 200px; /* or auto */
     }
     .modal {
       display: none;
@@ -114,8 +123,13 @@
 </style>
   <div class="container pt-4">
       <h1 class="userin">Users Information !!</h1>
-     
+       <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+  <div class="d-flex align-items-center mr-3">
+  <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label>
+  <input type="text" id="searchInput" class="form-control" style="width: 250px;" placeholder="Search Users..." onkeyup="searchUsers()" />
+</div>
       <input type="button" class="createbtn" value="Create User"  onclick="openModal()">
+</div>
   <div style="height: 60vh;overflow-y:scroll">
       <table class="table table-bordered">
           <thead>
@@ -213,6 +227,16 @@
   }
   function closeDeleteModal() {
     document.getElementById('deleteModal').style.display = 'none';
+  }
+
+
+  //Search Functionality
+   function searchUsers() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('table tbody tr');
+    rows.forEach(row => {
+      row.style.display = row.innerText.toLowerCase().includes(input) ? '' : 'none';
+    });
   }
 
 

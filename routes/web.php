@@ -42,6 +42,9 @@ Route::get('/dashboard', function () {
 // Route::get('/customers', function () {
 //     return view('customers');
 // });
+Route::get('/test', function () {
+    return view('test');
+});
 
 Route::get('/signup', function () {
     return view('createaccount');
