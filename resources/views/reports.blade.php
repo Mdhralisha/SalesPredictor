@@ -89,7 +89,8 @@
           <option value="sales">Sales Report</option>
           <option value="purchase">Purchase Report</option>
           <option value="inventory">Inventory Report</option>
-          <option value="salesanalysis">Sales Analysis Report</option>
+          <option value="salesanalysis1">Sales Prediction Report</option>
+           <option value="salesanalysis1">Sales Clustering Report</option>
         </select>
       </div>
 

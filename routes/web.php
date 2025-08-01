@@ -45,9 +45,15 @@ Route::get('/dashboard', function () {
 Route::get('/test', function () {
     return view('test');
 });
+Route::get('/purchasereport', function () {
+    return view('purchasereport');
+});
 
 Route::get('/signup', function () {
     return view('createaccount');
+});
+Route::get('/salesreport', function () {
+    return view('salesreport');
 });
 use App\Http\Controllers\CategoryDetailsController;
 
