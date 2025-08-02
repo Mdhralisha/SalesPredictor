@@ -55,6 +55,15 @@ Route::get('/signup', function () {
 Route::get('/salesreport', function () {
     return view('salesreport');
 });
+Route::get('/salespredictreport', function () {
+    return view('salespredictreport');
+});
+Route::get('/inventoryreport', function () {
+    return view('inventoryreport');
+});
+Route::get('/salesclusteringreport', function () {
+    return view('salesclusteringreport');
+});
 use App\Http\Controllers\CategoryDetailsController;
 
 Route::get('/category', [CategoryDetailsController::class, 'create'])->name('category.create');
