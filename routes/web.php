@@ -67,6 +67,7 @@ Route::get('/salesclusteringreport', function () {
 Route::get('/editpurchase', function () {
     return view('editpurchase');
 });
+
 use App\Http\Controllers\CategoryDetailsController;
 
 Route::get('/category', [CategoryDetailsController::class, 'create'])->name('category.create');
@@ -134,3 +135,10 @@ Route::put('/sales/{sales_details}', [SalesDetailsController::class, 'update'])-
 Route::delete('/sales/{sales_details}', [SalesDetailsController::class, 'destroy'])->name('sales.destroy');
 Route::post('/saveMultiple', [SalesDetailsController::class, 'saveMultiple'])->name('sales.saveMultiple');
 Route::get('/get-product-sale-price/{id}', [SalesDetailsController::class, 'getProductSalePrice']);
+
+use Illuminate\Support\Facades\Auth;
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/adminlogin');
+})->name('logout');

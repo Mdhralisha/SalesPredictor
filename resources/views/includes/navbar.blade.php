@@ -16,7 +16,7 @@
       <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
         <i class="fas fa-user"></i> 
       </a>
-      <div class="dropdown-menu dropdown-menu-right cursor-pointer" aria-labelledby="userDropdown">
+      <!-- <div class="dropdown-menu dropdown-menu-right cursor-pointer" aria-labelledby="userDropdown">
         <a class="dropdown-item" style="cursor: pointer;";
            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           Logout
@@ -28,7 +28,25 @@
         <form id="logout-form" method="POST" style="display: none;">
           @csrf
         </form>
-      </div>
+      </div> -->
+      <div class="dropdown-menu dropdown-menu-right cursor-pointer" aria-labelledby="userDropdown">
+  <!-- Logout -->
+  <a class="dropdown-item" href="{{ route('logout') }}"
+     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Logout
+  </a>
+
+  <!-- Change Password -->
+  <a class="dropdown-item" href="{{ route('changepw') }}">
+    Change Password
+  </a>
+
+  <!-- Hidden Logout Form -->
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+  </form>
+</div>
+
     </li>
   </ul>
 </nav>
