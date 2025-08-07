@@ -213,7 +213,7 @@
         @csrf
       <input type="text" id="vendorname" placeholder="Vendor name" required name="vendor_name">
       <input type="text" id="vendoraddress" placeholder="Address" required name="vendor_address">
-      <input type="number" id="contact" placeholder="Contact" required name="vendor_contact">
+      <input type="text" id="contact" placeholder="Contact" required name="vendor_contact" maxlength="10" pattern="\d{10}">
       <input type="email" id="email" placeholder="Email" required name="vendor_email">
     
       <div class="actions">
@@ -301,7 +301,7 @@
       <input type="hidden" id="edit_vendor_id" name="vendor_id">
       <input type="text" id="edit_vendorname" placeholder="Vendor Name" required name="vendor_name">
       <input type="text" id="edit_vendoraddress" placeholder="Address" required name="vendor_address">
-      <input type="number" id="edit_contact" placeholder="Contact Number" required name="vendor_contact">
+      <input type="text" id="edit_contact" placeholder="Contact Number" required name="vendor_contact" maxlength="10" pattern="\d{10}">
       <input type="email" id="edit_email" placeholder="Email" required name="vendor_email">
      
       <div class="actions">

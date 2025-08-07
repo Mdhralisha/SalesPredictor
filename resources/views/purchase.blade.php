@@ -160,7 +160,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>Quantity:</label>
-                            <input type="number" class="form-control" id="quantity">
+                            <input type="number" class="form-control" id="quantity" min="1" step="1">
                         </div>
                         <div class="form-group col-md-3">
                             <label>Vendor:</label>

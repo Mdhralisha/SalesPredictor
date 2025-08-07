@@ -79,7 +79,7 @@ class VendorDetailsController extends Controller
         'vendor_id' => 'required|exists:vendor_details,id',
         'vendor_name' => 'required|string|max:255',
         'vendor_address' => 'required|string|max:255',
-        'vendor_contact' => 'required|string|max:50',
+        'vendor_contact' => 'required|string|max:10',
         'vendor_email' => 'nullable|email|max:255',
     ]);
 

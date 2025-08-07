@@ -68,7 +68,8 @@ class PurchaseDetailsController extends Controller
      */
     public function edit(purchase_details $purchase_details)
     {
-        //
+        // You can return a view with the purchase details to edit
+        return view('editpurchase', compact('purchase_details'));
     }
 
     /**

@@ -67,7 +67,7 @@
 <div class="container pt-4 d-flex justify-content-center">
   <div class="report-container">
     <h3>Generate Report</h3>
-    <form method="POST" action="">
+    <form id="reportForm" onsubmit="return redirectToReport(event)">
       @csrf
       <!-- First row: From Date & To Date -->
       <div class="form-row">
@@ -101,4 +101,45 @@
     </form>
   </div>
 </div>
+<!-- JavaScript to handle redirection -->
+<script>
+  function redirectToReport(event) {
+    event.preventDefault();
+
+    const reportType = document.getElementById('report_type').value;
+    const fromDate = document.getElementById('from_date').value;
+    const toDate = document.getElementById('to_date').value;
+
+    if (!reportType || !fromDate || !toDate) {
+      alert("Please fill all fields before generating the report.");
+      return false;
+    }
+
+    let routeUrl = "";
+
+    switch (reportType) {
+      case "sales":
+        routeUrl = `/salesreport?from=${fromDate}&to=${toDate}`;
+        break;
+      case "purchase":
+        routeUrl = `/purchasereport?from=${fromDate}&to=${toDate}`;
+        break;
+      case "inventory":
+        routeUrl = `/inventoryreport?from=${fromDate}&to=${toDate}`;
+        break;
+      case "salesanalysis1":
+        routeUrl = `/salespredictreport?from=${fromDate}&to=${toDate}`;
+        break;
+      case "salesanalysis2":
+        routeUrl = `/salesclusteringreport?from=${fromDate}&to=${toDate}`;
+        break;
+      default:
+        alert("Invalid report type selected.");
+        return false;
+    }
+
+    window.location.href = routeUrl;
+    return false;
+  }
+</script>
 @endsection

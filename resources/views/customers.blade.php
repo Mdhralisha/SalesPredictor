@@ -206,7 +206,7 @@
             @csrf
             <input type="text" id="customername" placeholder="Customer Name" required name="customername">
             <input type="text" id="address" placeholder="Address" required name="address">
-            <input type="text" id="contact" placeholder="Contact No" required name="contact">
+            <input type="text" id="contact" placeholder="Contact No" required name="contact" maxlength="10" pattern="\d{10}">
 
 
             <div class="actions">
@@ -303,7 +303,7 @@
             <input type="text" id="edit_customer_id" name="id" hidden>
             <input type="text" id="edit_customername" placeholder="Customer Name" required name="customername">
             <input type="text" id="edit_address" placeholder="Address" required name="address">
-            <input type="text" id="edit_contact" placeholder="Contact No" required name="contact">
+            <input type="text" id="edit_contact" placeholder="Contact No" required name="contact" maxlength="10" pattern="\d{10}">
 
 
             <div class="actions">

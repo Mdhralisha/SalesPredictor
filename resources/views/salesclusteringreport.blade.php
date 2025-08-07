@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales Report</title>
+  <title>Sales Clustering Report</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -148,16 +148,16 @@
       </thead>
       <tbody>
         <tr>
-          <td>1</td>
-         
-        
+       
+
+        <td>1</td>
           <td>ABC Traders</td>
             <td>INV-001</td>
               <td>100</td>
              <td>Rs. 50</td>
           <td> Highest Sales</td>
         
-          <
+          
         </tr>
         <tr>
           <td>2</td>

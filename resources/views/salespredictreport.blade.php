@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales Report</title>
+  <title>Sales Prediction Report</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -141,26 +142,31 @@
           <th>Product Name</th>
           <th>Item Code</th>
           <th>Prediction</th>
-        
+       
+         
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>1</td>
-        
-         
+       
+
+        <td>1</td>
           <td>ABC Traders</td>
             <td>INV-001</td>
-          <td>20</td>
-       
+              <td>20</td>
+           
+          
         </tr>
         <tr>
           <td>2</td>
-          <td>XYZ Suppliers</td>
-            <td>INV-002</td>
-            <td>60</td>
-            <td
-         
+           <td>ABC Traders</td>
+            <td>INV-001</td>
+              <td>60</td>
+            
+          
+        
+          
+          
         </tr>
         <!-- Add more rows dynamically -->
       </tbody>
@@ -168,3 +174,4 @@
   </div>
 </body>
 </html>
+

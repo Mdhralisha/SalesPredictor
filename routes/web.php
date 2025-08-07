@@ -64,6 +64,9 @@ Route::get('/inventoryreport', function () {
 Route::get('/salesclusteringreport', function () {
     return view('salesclusteringreport');
 });
+Route::get('/editpurchase', function () {
+    return view('editpurchase');
+});
 use App\Http\Controllers\CategoryDetailsController;
 
 Route::get('/category', [CategoryDetailsController::class, 'create'])->name('category.create');

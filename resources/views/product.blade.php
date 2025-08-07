@@ -212,7 +212,7 @@
      <form action="{{ route('product.store') }}" method="POST">
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
-      <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity">
+      <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1">
 
       <select id="productunit" name="productunit" required>
         <option value="">Select Product Unit</option>
@@ -222,8 +222,8 @@
 
 
       </select>
-      <input type="number" id="purchaserate" placeholder="Purchase Rate" required name="purchaserate">
-      <input type="number" id="salesrate" placeholder="Sales Rate" required name="salesrate">
+      <input type="number" id="purchaserate" placeholder="Purchase Rate" required name="purchaserate"min="1" step="1">
+      <input type="number" id="salesrate" placeholder="Sales Rate" required name="salesrate" min="1" step="1">
       <select id="categorytype" name="category" required>
         <option value="">Select Category</option>
         @foreach($categories as $category)
@@ -336,7 +336,7 @@
       @method('PUT')
       <input type="hidden" id="edit_product_id" name="product_id">
       <input type="text" id="edit_productname" placeholder="Product Name" required name="productname">
-      <input type="number" id="edit_productquantity" placeholder="Quantity" required name="productquantity">
+      <input type="number" id="edit_productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1">
 
       <select id="edit_productunit" name="productunit" required>
         <option value="">Select Units</option>
@@ -344,8 +344,8 @@
         <option value="litre">Litre</option>
         <option value="pcs">Pcs</option>
       </select>
-      <input type="number" id="edit_purchaserate" placeholder="Purchase Rate" required name="purchaserate">
-      <input type="number" id="edit_salesrate" placeholder="Sales Rate" required name="salesrate">
+      <input type="number" id="edit_purchaserate" placeholder="Purchase Rate" required name="purchaserate" min="1" step="1">
+      <input type="number" id="edit_salesrate" placeholder="Sales Rate" required name="salesrate" min="1" step="1">
       <select id="edit_categorytype" name="category" required>
         <option value="">Select Category</option>
         @foreach($categories as $category)
