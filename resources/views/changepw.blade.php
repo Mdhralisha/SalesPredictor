@@ -70,14 +70,30 @@
     button:hover {
       background-color: #218838;
     }
+       .back-login {
+      margin-top: 30px;
+      display: block;
+      color: #6495ED;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 135px;
+ 
+    }
+
+
+    .back-login:hover {
+      text-decoration: underline;
+    }
+
   </style>
 </head>
 <body>
 
   <div class="password-box">
     <h2 style="font-family: sans-serif; color: #1e3c72;">Change Password</h2>
-    <form method="" action="#">
+    <form method="POST" >
       <!-- @csrf in Laravel -->
+      @csrf
       <div class="form-group">
        
         <input type="password" id="current_password" name="current_password" placeholder="Current Password" required>
@@ -95,6 +111,10 @@
 
       <center><button type="submit">Change Password</button></center>
     </form>
+
+     <a href="{{ route('adminlogin.login') }}" class="back-login">
+        &larr; Back to Login
+      </a>
   </div>
 
 </body>

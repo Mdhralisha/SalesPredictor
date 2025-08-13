@@ -1,145 +1,176 @@
-@extends('base')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Report</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-@section('styles')
-<!-- Bootstrap 4 CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap4.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
-@endsection
+</head>
 
-@section('content')
 <style>
-  .report-container {
-    background: #fff;
-    padding: 30px;
-    margin-top: 40px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    width: 70%;
+/* A4 Report Styling */
+.a4-report {
+  width: 210mm;
+  min-height: 160mm;
+  margin: auto;
+  padding: 20mm;
+  background: white;
+  box-shadow: 0 0 5px 10px rgba(5, 4, 4, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+}
+
+/* Title */
+.report-title {
+  font-size: 32px;
+  color: #0c337c;
+  font-weight: 700;
+}
+
+/* Date Centering */
+.date-range {
+  font-size: 16px;
+  color: #333;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+/* Report Table */
+.report-table {
+  font-size: 14px;
+  width: 100%;
+}
+
+.report-table thead {
+  background-color: #1f4870ff;
+  color: white;
+}
+
+.report-table th,
+.report-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Export Button */
+.export-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.export-btn:hover {
+  background-color: #a71d2a;
+  text-decoration: none;
+  color: white;
+}
+
+/* Print Optimization */
+@media print {
+  body * {
+    visibility: hidden;
   }
 
-  .report-container h3 {
-    color: #0c337c;
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 25px;
-    text-align: center;
+  .a4-report,
+  .a4-report * {
+    visibility: visible;
   }
 
-  .form-group label {
-    font-weight: 500;
-    color: #333;
-  }
-
-  .form-control {
-    border-radius: 6px;
+  .a4-report {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     box-shadow: none;
-    transition: border-color 0.3s ease-in-out;
   }
 
-  .form-control:focus {
-    border-color: #0c337c;
-    box-shadow: none;
+  .export-btn {
+    display: none;
   }
+}
+.export-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 28px; /* Increase icon size */
+  color: #dc3545;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
 
-  .btn-generate {
-    background-color: #0c337c;
-    color: white;
-    font-weight: 500;
-    padding: 10px 24px;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-  }
+.export-icon:hover {
+  color: #a71d2a;
+  text-decoration: none;
+}
 
-  .btn-generate:hover {
-    background-color: #8496b1ff;
-  }
 </style>
 
-<div class="container pt-4 d-flex justify-content-center">
-  <div class="report-container">
-    <h3>Generate Report</h3>
-    <form id="reportForm" onsubmit="return redirectToReport(event)">
-      @csrf
-      <!-- First row: From Date & To Date -->
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="from_date">From Date</label>
-          <input type="date" id="from_date" name="from_date" class="form-control" required>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="to_date">To Date</label>
-          <input type="date" id="to_date" name="to_date" class="form-control" required>
-        </div>
-      </div>
+<body>
+  <div class="container mt-5 a4-report">
 
-      <!-- Second row: Report Type (full width) -->
-      <div class="form-group">
-        <label for="report_type">Report Type</label>
-        <select id="report_type" name="report_type" class="form-control" required>
-          <option value="">-- Select Report Type --</option>
-          <option value="sales">Sales Report</option>
-          <option value="purchase">Purchase Report</option>
-          <option value="inventory">Inventory Report</option>
-          <option value="salesanalysis1">Sales Prediction Report</option>
-          <option value="salesanalysis2">Sales Clustering Report</option>
-        </select>
-      </div>
+    <!-- Export to PDF Button -->
+   <a href="/purchase-report/pdf" target="_blank" class="export-icon" title="Export to PDF">
+  <i class="fas fa-file-pdf"></i>
+</a>
 
-      <!-- Button: Centered -->
-      <div class="text-center mt-3">
-        <button type="submit" class="btn btn-generate">Generate Report</button>
-      </div>
-    </form>
+    <div class="text-center mb-4">
+      <h1 class="report-title">Purchase Report</h1>
+      <p class="date-range">
+        From: <strong>2025-07-01</strong> &nbsp;&nbsp;&nbsp;
+        To: <strong>2025-07-31</strong>
+      </p>
+    </div>
+
+    <table class="table table-bordered table-striped report-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Purchase Date</th>
+          <th>Invoice No.</th>
+          <th>Vendor</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Purchase Price</th>
+          <th>Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2025-07-05</td>
+          <td>INV-001</td>
+          <td>ABC Traders</td>
+          <td>Rice</td>
+          <td>100</td>
+          <td>Rs. 50</td>
+          <td>Rs. 5,000</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>2025-07-10</td>
+            <td>INV-002</td>
+          <td>XYZ Suppliers</td>
+          <td>Oil</td>
+          <td>60</td>
+          <td>Rs. 90</td>
+          <td>Rs. 5,400</td>
+        </tr>
+        <!-- Add more rows dynamically -->
+      </tbody>
+    </table>
   </div>
-</div>
-
-<!-- JavaScript to handle redirection -->
-<script>
-  function redirectToReport(event) {
-    event.preventDefault();
-
-    const reportType = document.getElementById('report_type').value;
-    const fromDate = document.getElementById('from_date').value;
-    const toDate = document.getElementById('to_date').value;
-
-    if (!reportType || !fromDate || !toDate) {
-      alert("Please fill all fields before generating the report.");
-      return false;
-    }
-
-    let routeUrl = "";
-
-    switch (reportType) {
-      case "sales":
-        routeUrl = `/salesreport?from=${fromDate}&to=${toDate}`;
-        break;
-      case "purchase":
-        routeUrl = `/report/purchase?from=${fromDate}&to=${toDate}`;
-        break;
-      case "inventory":
-        routeUrl = `/report/inventory?from=${fromDate}&to=${toDate}`;
-        break;
-      case "salesanalysis1":
-        routeUrl = `/report/sales-prediction?from=${fromDate}&to=${toDate}`;
-        break;
-      case "salesanalysis2":
-        routeUrl = `/report/sales-clustering?from=${fromDate}&to=${toDate}`;
-        break;
-      default:
-        alert("Invalid report type selected.");
-        return false;
-    }
-
-    window.location.href = routeUrl;
-    return false;
-  }
-</script>
-@endsection
+</body>
+</html>
