@@ -138,39 +138,26 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Sales Date</th>
-          <th>Invoice No.</th>
-          <th>Customer</th>
-          <th>Product</th>
-          <th>Quantity</th>
-          <th>Sales Rate</th>
-          <th>Discount</th>
-          <th>Total Amount</th>
+          <th>Stock In</th>
+          <th>Stock Out</th>
+          <th>Remaining Stock</th>
+          <th>Purchase Rate</th>
+          <th>Stock Valuation </th>
+         
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>1</td>
-          <td>2025-07-05</td>
-          <td>INV-001</td>
-          <td>ABC Traders</td>
-          <td>Rice</td>
+        
+          <td>10</td>
+          <td>5/td>
+          <td>5</td>
           <td>100</td>
-          <td>Rs. 50</td>
-          <td>Rs. 5</td>
-          <td>Rs. 5,000</td>
+          <td>Rs. 500</td>
+         
         </tr>
-        <tr>
-          <td>2</td>
-          <td>2025-07-10</td>
-          <td>INV-002</td>
-          <td>XYZ Suppliers</td>
-          <td>Oil</td>
-          <td>60</td>
-          <td>Rs. 90</td>
-            <td>Rs. 10</td>
-          <td>Rs. 5,400</td>
-        </tr>
+        
         <!-- Add more rows dynamically -->
       </tbody>
     </table>
