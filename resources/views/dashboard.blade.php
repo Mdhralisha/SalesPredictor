@@ -49,19 +49,19 @@
 <div class="dashboard-container">
   <div class="card">
     <h3>Total Users</h3>
-    <p>120</p>
+    <p>{{ $totalUsers }}</p>
   </div>
   <div class="card">
     <h3>Total Sales</h3>
-    <p>Rs.4,500</p>
+    <p>NPR . {{ round($totalSales,2) }}</p>
   </div>
   <div class="card">
     <h3>Total Purchase</h3>
-    <p>Rs.5900</p>
+    <p>NPR. {{ round($totalPurchase,2 )}}</p>
   </div>
   <div class="card">
     <h3>Reports</h3>
-    <p>12</p>
+    <p>{{$totalReports}}</p>
   </div>
 </div>
 @endsection
