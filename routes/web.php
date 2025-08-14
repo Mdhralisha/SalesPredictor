@@ -68,9 +68,9 @@ Route::middleware(['auth'])->group(function () {
         return view('salespredictreport');
     });
 
-    Route::get('/inventoryreport', function () {
-        return view('inventoryreport');
-    });
+    Route::get('/inventoryreport', [ReportController::class, 'inventoryReport'])->name('inventory.report');
+    Route::get('/inventoryreport', [ReportController::class, 'inventoryReport']);
+    
 
     Route::get('/salesclusteringreport', function () {
         return view('salesclusteringreport');

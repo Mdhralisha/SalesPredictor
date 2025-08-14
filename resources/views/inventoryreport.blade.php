@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales Report</title>
+  <title>Inventory Report</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 </head>
 
 <style>
@@ -118,26 +118,27 @@
 
 </style>
 
+
 <body>
-  <div class="container mt-5 a4-report">
+  <button id="generatePdfBtn" class="export-btn">Generate PDF</button>
+  <div class="container mt-5 a4-report" id="inventoryReportContainer">
 
     <!-- Export to PDF Button -->
-   <a href="/purchase-report/pdf" target="_blank" class="export-icon" title="Export to PDF">
-  <i class="fas fa-file-pdf"></i>
-</a>
 
     <div class="text-center mb-4">
       <h1 class="report-title">Inventory Report</h1>
       <p class="date-range">
-        From: <strong>2025-07-01</strong> &nbsp;&nbsp;&nbsp;
-        To: <strong>2025-07-31</strong>
+          From: <strong>{{ $fromDate }}</strong> &nbsp;&nbsp;&nbsp;
+    To: <strong>{{ $toDate }}</strong>
       </p>
     </div>
 
     <table class="table table-bordered table-striped report-table">
       <thead>
-        <tr>
+      <tr>
+          <tr>
           <th>#</th>
+          <th>Product Name</th>
           <th>Stock In</th>
           <th>Stock Out</th>
           <th>Remaining Stock</th>
@@ -147,20 +148,38 @@
         </tr>
       </thead>
       <tbody>
+        @foreach ($inventoryData as $inventory)
         <tr>
-          <td>1</td>
-        
-          <td>10</td>
-          <td>5/td>
-          <td>5</td>
-          <td>100</td>
-          <td>Rs. 500</td>
-         
-        </tr>
-        
-        <!-- Add more rows dynamically -->
+          <td>{{ $loop->iteration }}</td>
+          <td>{{ $inventory->product_name }}</td>
+          <td>{{ $inventory->total_purchase_qty }}</td>
+          <td>{{ $inventory->total_purchase_qty }}</td>
+          <td>{{ $inventory->remaining_stock }}</td>
+          <td>Rs. {{ number_format($inventory->purchase_rate, 2) }}</td>
+          <td>Rs. {{ number_format($inventory->stock_value, 2) }}</td>
+                  </tr>
+        @endforeach
       </tbody>
     </table>
   </div>
+
+  <script>
+    document.getElementById('generatePdfBtn').addEventListener('click', function () {
+      var element = document.getElementById('inventoryReportContainer');
+      
+      // Generate PDF
+      html2pdf(element, {
+        margin: 2,
+        filename: 'inventory_report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { dpi: 192, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      });
+    });
+  </script>
 </body>
 </html>
+
+
+
+

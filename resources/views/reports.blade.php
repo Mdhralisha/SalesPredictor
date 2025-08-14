@@ -73,11 +73,14 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="from_date">From Date</label>
-          <input type="date" id="from_date" name="from_date" class="form-control" required>
+       <input type="date" id="from_date" name="from_date" class="form-control" required
+         max="{{ \Carbon\Carbon::now()->toDateString() }}">
         </div>
+        
         <div class="form-group col-md-6">
           <label for="to_date">To Date</label>
-          <input type="date" id="to_date" name="to_date" class="form-control" required>
+           <input type="date" id="to_date" name="to_date" class="form-control" required
+         max="{{ \Carbon\Carbon::now()->toDateString() }}">
         </div>
       </div>
 
