@@ -84,9 +84,9 @@ Route::middleware(['auth'])->group(function () {
         return view('test');
     });
 
-    Route::get('/purchasereport', function () {
-        return view('purchasereport');
-    });
+    Route::get('/purchasereport', [ReportController::class, 'purchaseReport'])->name('purchase.report');
+    Route::get('/purchasereport', [ReportController::class, 'purchaseReport']);
+    
 
     // Category routes
     Route::get('/category', [CategoryDetailsController::class, 'index'])->name('category.index');

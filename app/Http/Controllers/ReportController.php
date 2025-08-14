@@ -28,4 +28,22 @@ class ReportController extends Controller
         // Return the view with the sales data
         return view('salesreport', compact('salesData', 'fromDate', 'toDate'));
     }
+     public function purchaseReport(Request $request)
+    {
+        // Get the 'from' and 'to' date parameters from the request
+        $fromDate = $request->input('from', Carbon::now()->startOfMonth()->toDateString());
+        $toDate = $request->input('to', Carbon::now()->toDateString());
+
+        // Use Carbon to set the time range
+        $fromDateTime = Carbon::parse($fromDate)->startOfDay();  // Starting from 00:00:00
+        $toDateTime = Carbon::parse($toDate)->endOfDay();        // Ending at 23:59:59
+
+        // Query the PurchaseDetails model using whereBetween for the full date-time range
+        $purchaseData = purchase_details::whereBetween('created_at', [$fromDateTime, $toDateTime])
+                                ->orderBy('created_at', 'asc')
+                                ->get();
+
+        // Return the view with the purchase data
+        return view('purchasereport', compact('purchaseData', 'fromDate', 'toDate'));
+    }
 }

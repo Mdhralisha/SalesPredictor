@@ -6,7 +6,7 @@
   <title>Purchase Report</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 </head>
 
 <style>
@@ -118,13 +118,12 @@
 
 </style>
 
+
 <body>
-  <div class="container mt-5 a4-report">
+  <button id="generatePdfBtn" class="export-btn">Generate PDF</button>
+  <div class="container mt-5 a4-report" id="purchaseReportContainer">
 
     <!-- Export to PDF Button -->
-   <a href="/purchase-report/pdf" target="_blank" class="export-icon" title="Export to PDF">
-  <i class="fas fa-file-pdf"></i>
-</a>
 
     <div class="text-center mb-4">
       <h1 class="report-title">Purchase Report</h1>
@@ -136,7 +135,7 @@
 
     <table class="table table-bordered table-striped report-table">
       <thead>
-        <tr>
+      <tr>
           <th>#</th>
           <th>Purchase Date</th>
           <th>Invoice No.</th>
@@ -148,29 +147,37 @@
         </tr>
       </thead>
       <tbody>
+        @foreach ($purchaseData as $purchase)
         <tr>
-          <td>1</td>
-          <td>2025-07-05</td>
-          <td>INV-001</td>
-          <td>ABC Traders</td>
-          <td>Rice</td>
-          <td>100</td>
-          <td>Rs. 50</td>
-          <td>Rs. 5,000</td>
+          <td>{{ $loop->iteration }}</td>
+          <td>{{ $purchase->created_at }}</td>
+          <td>{{ $purchase->invoice_no }}</td>
+          <td>{{ $purchase->vendor->vendor_name }}</td>
+          <td>{{ $purchase->product->product_name }}</td>
+          <td>{{ $purchase->purchase_quantity }}</td>
+          <td>Rs. {{ number_format($purchase->purchase_rate, 2) }}</td>
+          <td>Rs. {{ number_format($purchase->purchase_rate * $purchase->purchase_quantity, 2) }}</td>
         </tr>
-        <tr>
-          <td>2</td>
-          <td>2025-07-10</td>
-            <td>INV-002</td>
-          <td>XYZ Suppliers</td>
-          <td>Oil</td>
-          <td>60</td>
-          <td>Rs. 90</td>
-          <td>Rs. 5,400</td>
-        </tr>
-        <!-- Add more rows dynamically -->
+        @endforeach
       </tbody>
     </table>
   </div>
+
+  <script>
+    document.getElementById('generatePdfBtn').addEventListener('click', function () {
+      var element = document.getElementById('purchaseReportContainer');
+      
+      // Generate PDF
+      html2pdf(element, {
+        margin: 2,
+        filename: 'purchase_report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { dpi: 192, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      });
+    });
+  </script>
 </body>
 </html>
+
+
