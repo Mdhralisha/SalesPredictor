@@ -38,7 +38,24 @@ class UserController extends Controller
     public function update(Request $request, User $user_details)
     {
         //
+      
+        // $user = User::findOrFail($id);
+
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'useremail' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'userrole' => 'required|in:admin,teller',
+        ]);
+$user = User::findOrFail($user_details->id);
+        $user->update([
+            'name' => $request->username,
+            'email' => $request->useremail,
+            'user_role' => $request->userrole,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully!');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -46,6 +63,12 @@ class UserController extends Controller
     public function destroy(User $user_details)
     {
         //
+            
+        $user = User::findOrFail($user_details->id);
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+    
     }
 
     public function login(Request $request)

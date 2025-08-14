@@ -153,12 +153,19 @@
           <td>{{ $user->email }}</td>
           <td>{{ $user->user_role }}</td>
           <td>
-            <button class="edituser" onclick="editUser(this)"
+            <!-- <button class="edituser" onclick="editUser(this)"
               data-id="{{ $user->id }}"
               data-name="{{ $user->name }}"
               data-email="{{ $user->email }}"
               data-role="{{ $user->user_role }}">Edit</button>
-            <button class="deleteuser" onclick="alert('Delete User: {{ $user->name }}')">Delete</button>
+            <button class="deleteuser" onclick="alert('Delete User: {{ $user->name }}')">Delete</button> -->
+        <button class="edituser" onclick="editUser(this)"
+        data-id="{{ $user->id }}"
+        data-name="{{ $user->name }}"
+        data-email="{{ $user->email }}"
+        data-role="{{ $user->user_role }}">Edit</button>
+
+<button class="deleteuser" onclick="deleteUser(this)" data-id="{{ $user->id }}">Delete</button>
         </tr>
         @endforeach
 
@@ -224,6 +231,7 @@
     document.getElementById('edit_useremail').value = email;
     document.getElementById('edit_userrole').value = role; // This selects the current role
 
+     document.getElementById('editUserForm').action = `/users/${id}`;
     document.getElementById('editModal').style.display = 'block';
   }
 
@@ -231,15 +239,30 @@
     document.getElementById('editModal').style.display = 'none';
   }
 
+  // function deleteUser(button) {
+  //   const id = button.getAttribute('data-id');
+  //   // document.getElementById('deleteForm').action = '/users/' + id;
+  //     document.getElementById('deleteForm').action = `/users/${id}`;
+  //   document.getElementById('deleteModal').style.display = 'block';
+  // }
+
+  // function closeDeleteModal() {
+  //   document.getElementById('deleteModal').style.display = 'none';
+  // }
   function deleteUser(button) {
     const id = button.getAttribute('data-id');
-    document.getElementById('deleteForm').action = '/users/' + id;
-    document.getElementById('deleteModal').style.display = 'block';
-  }
+    const form = document.getElementById('deleteForm');
 
-  function closeDeleteModal() {
+    // Set the correct action URL dynamically
+    form.action = `/users/${id}`;
+
+    // Show the modal
+    document.getElementById('deleteModal').style.display = 'block';
+}
+
+function closeDeleteModal() {
     document.getElementById('deleteModal').style.display = 'none';
-  }
+}
 
 
   //Search Functionality
@@ -254,7 +277,7 @@
 <div class="modal" id="editModal">
   <div class="modal-content">
     <h2>Edit Users</h2>
-    <form id="editProductForm" method="POST" action=" ">
+    <form id="editUserForm" method="POST" action=" ">
       @csrf
       @method('PUT')
       <input type="hidden" id="edit_user_id" name="user_id">
@@ -263,8 +286,8 @@
 
       <select id="edit_userrole" name="userrole" required>
         <option value="">Select Role</option>
-        <option value="Admin" {{ old('userrole') == 'Admin' ? 'selected' : '' }}>Admin</option>
-        <option value="User" {{ old('userrole') == 'User' ? 'selected' : '' }}>User</option>
+        <option value="Admin" {{ old('userrole') == 'admin' ? 'selected' : '' }}>Admin</option>
+        <option value="User" {{ old('userrole') == 'teller' ? 'selected' : '' }}>Teller</option>
       </select>
 
       <div class="actions">
@@ -291,6 +314,8 @@
     </form>
   </div>
 </div>
+
+
 
 
 

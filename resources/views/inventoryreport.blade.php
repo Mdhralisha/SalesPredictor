@@ -153,7 +153,7 @@
           <td>{{ $loop->iteration }}</td>
           <td>{{ $inventory->product_name }}</td>
           <td>{{ $inventory->total_purchase_qty }}</td>
-          <td>{{ $inventory->total_purchase_qty }}</td>
+          <td>{{ $inventory->total_sales_qty }}</td>
           <td>{{ $inventory->remaining_stock }}</td>
           <td>Rs. {{ number_format($inventory->purchase_rate, 2) }}</td>
           <td>Rs. {{ number_format($inventory->stock_value, 2) }}</td>
