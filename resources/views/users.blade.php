@@ -286,8 +286,8 @@ function closeDeleteModal() {
 
       <select id="edit_userrole" name="userrole" required>
         <option value="">Select Role</option>
-        <option value="Admin" {{ old('userrole') == 'admin' ? 'selected' : '' }}>Admin</option>
-        <option value="User" {{ old('userrole') == 'teller' ? 'selected' : '' }}>Teller</option>
+        <option value="admin" {{ old('userrole') == 'admin' ? 'selected' : '' }}>Admin</option>
+        <option value="teller" {{ old('userrole') == 'teller' ? 'selected' : '' }}>Teller</option>
       </select>
 
       <div class="actions">

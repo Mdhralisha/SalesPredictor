@@ -161,7 +161,7 @@
       <tr>
         <th>S.N</th>
         <th>Product</th>
-        <th>Qty</th>
+        <!-- <th>Qty</th> -->
         <th>Unit</th>
         <th>Purchase Rate</th>
         <th> Sales Rate</th>
@@ -178,7 +178,7 @@
       <tr>
         <td>{{ $index + 1 }}</td>
         <td>{{ $product->product_name }}</td>
-        <td>{{ $product->product_quantity }}</td>
+        <!-- <td>{{ $product->product_quantity }}</td> -->
         <td>{{ $product->product_unit }}</td>
         <td>{{ $product->product_rate }}</td>
         <td>{{ $product->sales_rate }}</td>
@@ -212,7 +212,7 @@
      <form action="{{ route('product.store') }}" method="POST">
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
-      <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1">
+      <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1" value="0" readonly>
 
       <select id="productunit" name="productunit" required>
         <option value="">Select Product Unit</option>

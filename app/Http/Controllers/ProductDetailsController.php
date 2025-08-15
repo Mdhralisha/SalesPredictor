@@ -89,7 +89,7 @@ class ProductDetailsController extends Controller
          $request->validate([
             'product_id' => 'required',
             'productname' => 'required|string|max:255',
-            'productquantity' => 'required|integer|min:1',
+            'productquantity' => 'required|integer|min:0',
             'productunit' => 'required|string|max:50',
             'purchaserate' => 'required|numeric|min:0',
             'category' => 'required',

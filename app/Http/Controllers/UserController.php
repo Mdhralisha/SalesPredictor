@@ -86,7 +86,7 @@ class UserController extends Controller
         }
 
         return redirect()->back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Invalid Email or Password.',
         ]);
     }
 }

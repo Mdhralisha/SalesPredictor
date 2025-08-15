@@ -42,7 +42,9 @@ Route::post('/logout', function () {
 })->name('logout');
 
 
-
+ Route::get('/inventory', function () {
+        return view('landingpage');
+    });
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
@@ -83,6 +85,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/test', function () {
         return view('test');
     });
+
+    
 
     Route::get('/purchasereport', [ReportController::class, 'purchaseReport'])->name('purchase.report');
     Route::get('/purchasereport', [ReportController::class, 'purchaseReport']);

@@ -12,7 +12,7 @@
 <style>
     
 body{
-     background: linear-gradient(to right, #cfd1d5ff, #7384a5ff); 
+     background: white ;
      overflow: hidden;
 }
 .form-section {
@@ -95,8 +95,11 @@ body{
       <form action="{{ route('adminlogin.login') }}" method="POST">
         @csrf
         <h2>USER LOGIN</h2>
-
-    
+       @if ($errors->has('email'))
+        <div style="color: red; margin-bottom: 15px;">
+            {{ $errors->first('email') }}
+        </div>
+    @endif
 
         <input type="email" id="username" placeholder="Email" required class="inputt" name="email">
         <br>
