@@ -75,10 +75,25 @@ class PurchaseDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, purchase_details $purchase_details)
-    {
-        //
-    }
+/**
+ * Update the specified resource in storage.
+ */
+public function update(Request $request, purchase_details $purchase_details)
+{
+    // Debugging - check if request is reaching here
+
+    $validated = $request->validate([
+        'invoice_no' => 'required|string',
+        'purchase_quantity' => 'required|numeric|min:0',
+        'purchase_rate' => 'required|numeric|min:0',
+        'vendor_id' => 'required|exists:vendor_details,id',
+        'product_id' => 'required|exists:product_details,id',
+    ]);
+
+    $purchase_details->update($validated);
+
+    return response()->json(['message' => 'Purchase updated successfully']);
+}
 
     /**
      * Remove the specified resource from storage.
