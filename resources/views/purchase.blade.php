@@ -11,7 +11,7 @@
 <style>
     :root {
         --primary-color: #959595ff;
-        --secondary-color: #3498db;
+        --secondary-color: #0c337cff;
         --accent-color: #e74c3c;
         --success-color: #27ae60;
         --light-bg: #f8f9fa;
@@ -21,11 +21,12 @@
 
     .page-title {
         color: var(--primary-color);
-        font-size: 2.2rem;
+        
         font-weight: 700;
         margin-bottom: 1.5rem;
         padding-bottom: 0.5rem;
         display: inline-block;
+        font-size: 30px;
     }
 
     .card {
@@ -110,6 +111,7 @@
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.875rem;
+        
     }
 
     .table tbody td {

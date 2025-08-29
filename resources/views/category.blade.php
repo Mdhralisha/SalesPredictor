@@ -12,11 +12,12 @@
 @section('content')
 <style>
     .userin {
-        text-align: center;
-         color: #0c337c;
+    
+      color: #74767aff;
         font-size: 30px;
         margin-bottom: 20px;
         margin-top: 20px;
+      
     }
 .addcategorybtn {
         background-color: #0c337cff;
@@ -98,10 +99,10 @@
       color: white;
     }
      .editcategory{
-      background: green;
+      background:  #27ae60;
       color:white;
       border: none;
-      border-radius: 3px;
+      border-radius: 5px;
       width: 15%;
     
     }
@@ -112,8 +113,9 @@
       background: red;
       color:white;
       border: none;
-      border-radius: 3px;
-      width: 15%;
+      border-radius: 5px;
+      width: 20%;
+      height: 28px;
     
     
     }
@@ -123,9 +125,12 @@
     .table.table-bordered{
       background-color: white;
       box-shadow: 0px 1px 2px gray;
+      border-radius: 15px;
     }
      .addcategorybtn:hover {
-    background-color: #334258ff;
+  background-color: #2980b9;
+        border-color: #2980b9;
+        transform: translateY(-2px);
   }
   .btn-submit:hover {
     background-color: #3f6147ff;
@@ -134,18 +139,26 @@
   .btn-cancel:hover {
     background-color: #794b4fff;
   }
+   
+  #searchInput {
+    margin-left: 10px; /* Space for the icon */
+  }
   
       
       
 </style>
   <div class="container pt-4">
-      <h1 class="userin">Product Categories !!</h1>
+      <h1 class="userin">Category Management</h1>
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
   <div class="d-flex align-items-center mr-3">
-  <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label>
+  <!-- <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label> -->
+   <i class="fas fa-search me-2 text-muted"></i>  
   <input type="text" id="searchInput" class="form-control" style="width: 250px;" placeholder="Search Categories..." onkeyup="searchCategories()" />
 </div>
-      <input type="button" class="addcategorybtn" value="ADD CATEGORY" onclick="openModal()">
+<button class="addcategorybtn" onclick="openModal()">
+  <i class="fas fa-plus-circle me-2"></i> Add Category
+</button>
+    <!-- <input type="button" class="addcategorybtn" value="ADD CATEGORY" onclick="openModal()"> -->
       </div>
       @if(session('success'))
           <div class="alert alert-success">
@@ -170,8 +183,8 @@
                   <td>  
                     <button onclick="editCategory(this)" title="Edit" class="editcategory"  
                      data-id="{{ $category->id }}" 
-                     data-name="{{ $category->category_name }}">Edit</button>
-                    <button onclick="deleteCategory(this)" data-id="{{ $category->id }}" title="Delete" class="deletecategory">Delete</button>
+                     data-name="{{ $category->category_name }}">   <i class="fas fa-edit me-1"></i> Edit</button>
+                    <button onclick="deleteCategory(this)" data-id="{{ $category->id }}" title="Delete" class="deletecategory"> <i class="fas fa-trash-alt me-1"></i>  Delete</button>
                 </td>
               </tr>
             @endforeach

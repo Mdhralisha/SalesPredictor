@@ -13,8 +13,7 @@
 @section('content')
 <style>
   .userin {
-    text-align: center;
-   color: #0c337c;
+       color: #74767aff;
     font-size: 30px;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -106,10 +105,10 @@
   }
 
   .editproduct {
-    background: green;
+    background:  #27ae60;
     color: white;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     width: 35%;
 
   }
@@ -121,7 +120,7 @@
     background: red;
     color: white;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     width: 55%;
 
   }
@@ -133,9 +132,14 @@
   .table.table-bordered {
     background-color: white;
     box-shadow: 0px 1px 2px gray;
+    border-radius: 15px;
   }
   .addproductbtn:hover {
-    background-color: #5e6a7bff;
+    
+       background-color: #2980b9;
+        border-color: #2980b9;
+        transform: translateY(-2px);
+    
   }
   .btn-submit:hover {
     background-color: #3f6147ff;
@@ -143,16 +147,23 @@
   .btn-cancel:hover {
     background-color: #794b4fff;
   }
-
+ #searchInput {
+    margin-left: 10px;
+    /* Space for the icon */
+  }
 </style>
 <div class="container pt-4">
-  <h1 class="userin">Product Details!!</h1>
+  <h1 class="userin">Product Management</h1>
    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
   <div class="d-flex align-items-center mr-3">
-  <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label>
+  <!-- <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label> -->
+    <i class="fas fa-search me-2 text-muted"></i>
   <input type="text" id="searchInput" class="form-control" style="width: 250px;" placeholder="Search Products..." onkeyup="searchProducts()" />
 </div>
-  <input type="button" class="addproductbtn" value="ADD PRODUCTS" onclick="openModal()">
+  <!-- <input type="button" class="addproductbtn" value="ADD PRODUCTS" onclick="openModal()"> -->
+   <button class="addproductbtn" onclick="openModal()">
+  <i class="fas fa-plus-circle me-2"></i> Add Products
+</button>
 </div>
   <div style="height: 60vh;overflow-y:scroll">
   <table class="table table-bordered">
@@ -195,9 +206,10 @@
             data-srate="{{ $product->sales_rate }}"
             data-category="{{ $product->category_id }}"
             data-vendor="{{ $product->vendor_id }}"
-            >Edit</button>
+            ><i class="fas fa-edit me-1"></i>  Edit</button>
           <button onclick="deleteProduct(this)" title="Delete" class="deleteproduct"
-            data-id="{{ $product->id }}">Delete</button>
+            data-id="{{ $product->id }}">
+<i class="fas fa-trash-alt me-1"></i>  Delete</button>
         </td>
       </tr>
       @endforeach
@@ -212,7 +224,7 @@
      <form action="{{ route('product.store') }}" method="POST">
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
-      <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1" value="0" readonly>
+      <!-- <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1" value="0" readonly> -->
 
       <select id="productunit" name="productunit" required>
         <option value="">Select Product Unit</option>

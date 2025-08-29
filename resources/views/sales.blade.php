@@ -9,8 +9,8 @@
 <style>
     /* Your existing styles here (same as you provided) */
     .userin {
-        text-align: center;
-        color: #0c337c;
+    
+        color: #82868dff;
         font-size: 30px;
         margin-bottom: 20px;
         margin-top: 20px;
@@ -39,11 +39,11 @@
         width: 200px; /* or auto */
     }
     .editsales {
-        background-color: green;
+       background:  #27ae60;
         color: white;
         padding: 5px 10px;
         border: none;
-        border-radius: 3px;
+        border-radius: 5px;
         cursor: pointer;
     }
     .editsales:hover {
@@ -54,7 +54,7 @@
         color: white;
         padding: 5px 10px;
         border: none;
-        border-radius: 3px;
+        border-radius: 5px;
         cursor: pointer;
     }
     .deletesales:hover {
@@ -64,6 +64,7 @@
     .table.table-bordered {
         background-color: white;
         box-shadow: 0px 1px 2px gray;
+        border-radius: 15px;
     }
     .modal-content {
         background-color: #fff;
@@ -77,19 +78,26 @@
     .modal-footer button {
         width: 150px;
     }
-    .createbtn:hover {
-        background-color: #45536eff;
+  .createbtn:hover {
+       background-color: #2980b9;
+        border-color: #2980b9;
+        transform: translateY(-2px);
+    }
+    #searchInput {
+        margin-left: 10px; /* Space for the icon */
     }
 </style>
 
 <div class="container pt-4">
-    <h1 class="userin">Sales Details!!</h1>
+    <h1 class="userin">Sales Management</h1>
       <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
   <div class="d-flex align-items-center mr-3">
-  <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label>
+  <!-- <label for="searchInput" class="mr-2 mb-0" style="font-weight: normal;">Search:</label> -->
+   <i class="fas fa-search me-2 text-muted"></i>  
   <input type="text" id="searchInput" class="form-control" style="width: 250px;" placeholder="Search Sales..." onkeyup="searchSales()" />
 </div>
-    <button type="button" class="createbtn" onclick="openModal()">Add Sales</button>
+    <button type="button" class="createbtn" onclick="openModal()">  <i class="fas fa-plus-circle me-2"></i> Add Sales</button>
+   
 </div>
         <table class="table table-bordered">
             <thead>
@@ -115,8 +123,9 @@
                     <td>Rs {{ number_format($sale->sales_quantity * $sale->sales_rate, 2) }}</td>
                     <td>{{ $sale->customer->customer_name ?? 'N/A' }}</td>
                     <td>
-                        <button onclick="editSales(this)" class="editsales">Edit</button>
-                        <button onclick="deleteSales(this)" class="deletesales">Delete</button>
+                        <button onclick="editSales(this)" class="editsales"><i class="fas fa-edit me-1"></i> 
+ Edit</button>
+                        <button onclick="deleteSales(this)" class="deletesales"><i class="fas fa-trash-alt me-1"></i> Delete</button>
                     </td>
                 </tr>
                 @endforeach
