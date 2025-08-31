@@ -348,7 +348,7 @@
       @method('PUT')
       <input type="hidden" id="edit_product_id" name="product_id">
       <input type="text" id="edit_productname" placeholder="Product Name" required name="productname">
-      <input type="number" id="edit_productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1">
+      <input type="number" id="edit_productquantity" placeholder="Quantity" required name="productquantity" step="1" value="0" hidden>
 
       <select id="edit_productunit" name="productunit" required>
         <option value="">Select Units</option>

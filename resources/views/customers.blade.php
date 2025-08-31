@@ -151,7 +151,7 @@
     }
     #searchInput {
      
-        padding-left: 30px;
+        margin-left: 10px;
     }
 </style>
 <div class="container pt-4" >

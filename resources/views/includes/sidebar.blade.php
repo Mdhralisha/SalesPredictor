@@ -3,7 +3,7 @@
 
 
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="../dashboard" class="brand-link">
+    <a href="../dashboard" class="brand-link text-decoration-none">
       <span class="brand-text font-weight-light">Sales Prediction System</span>
     </a>
 

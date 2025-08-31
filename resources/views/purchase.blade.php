@@ -198,6 +198,73 @@
             max-height: 50vh;
         }
     }
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    /* Ensure it's on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+
+  }
+
+
+  /* Modal Box */
+  .modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+
+
+  .modal-content h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .modal-content input,
+  .modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .modal-content .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .modal-content .actions button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+    .btn-submit {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+   .btn-submit:hover {
+    background-color: #3f6147ff;
+  }
+  .btn-cancel:hover {
+    background-color: #794b4fff;
+  }
 </style>
 
 <div class="container">
@@ -261,7 +328,7 @@
 
 <!-- Add Purchase Modal -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="fas fa-cart-plus me-2"></i>Add New Purchase</h5>
@@ -438,21 +505,21 @@
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this purchase record? This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-            </div>
-        </div>
+         <div class="modal-content">
+
+    <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this product?</p>
+    <form id="deleteProductForm" method="POST">
+      @csrf
+      @method('DELETE')
+      <div class="actions">
+        <button type="submit" class="btn-submit" style="background: green; margin-left: 150px;">Delete</button>
+        <button type="button" class="btn-cancel" style="background: red; margin-right: 150px;" onclick="closeDeleteModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
     </div>
 </div>
+
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -679,6 +746,30 @@
                 return false;
             }
         });
+
+        $('#edit_vendor').on('change', function() {
+        const vendorId = $(this).val();
+        const productSelect = $('#edit_product');
+        productSelect.empty().append('<option value="">Loading...</option>');
+
+        if (vendorId) {
+            $.ajax({
+                url: `/get-products-by-vendor/${vendorId}`,
+                type: 'GET',
+                success: function(data) {
+                    productSelect.empty().append('<option value="">-- Select Product --</option>');
+                    data.forEach(function(product) {
+                        productSelect.append(`<option value="${product.id}">${product.product_name}</option>`);
+                    });
+                },
+                error: function() {
+                    productSelect.empty().append('<option value="">Error loading products</option>');
+                }
+            });
+        } else {
+            productSelect.empty().append('<option value="">-- Select Product --</option>');
+        }
+    });
 
         // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('editPurchaseModal'));

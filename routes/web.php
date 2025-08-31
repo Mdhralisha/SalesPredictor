@@ -42,9 +42,9 @@ Route::post('/logout', function () {
 })->name('logout');
 
 
- Route::get('/inventory', function () {
-        return view('landingpage');
-    });
+Route::get('/inventory', function () {
+    return view('landingpage');
+});
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/inventoryreport', [ReportController::class, 'inventoryReport'])->name('inventory.report');
     Route::get('/inventoryreport', [ReportController::class, 'inventoryReport']);
-    
+
 
     Route::get('/salesclusteringreport', function () {
         return view('salesclusteringreport');
@@ -86,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
         return view('test');
     });
 
-    
+
 
     Route::get('/purchasereport', [ReportController::class, 'purchaseReport'])->name('purchase.report');
     Route::get('/purchasereport', [ReportController::class, 'purchaseReport']);
@@ -146,9 +146,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sales', [SalesDetailsController::class, 'index'])->name('sales.index');
     Route::get('/sales/create', [SalesDetailsController::class, 'create'])->name('sales.create');
     Route::post('/sales', [SalesDetailsController::class, 'store'])->name('sales.store');
-    Route::get('/sales/{sales_details}', [SalesDetailsController::class, 'show'])->name('sales.show');
+    Route::get('/sales/{id}', [SalesDetailsController::class, 'show'])->name('sales.show');
     Route::put('/sales/{sales_details}', [SalesDetailsController::class, 'update'])->name('sales.update');
-    Route::delete('/sales/{sales_details}', [SalesDetailsController::class, 'destroy'])->name('sales.destroy');
+    Route::delete('/sales/{id}', [SalesDetailsController::class, 'destroy'])->name('sales.destroy');
     Route::post('/saveMultiple', [SalesDetailsController::class, 'saveMultiple'])->name('sales.saveMultiple');
     Route::get('/get-product-sale-price/{id}', [SalesDetailsController::class, 'getProductSalePrice']);
 });
