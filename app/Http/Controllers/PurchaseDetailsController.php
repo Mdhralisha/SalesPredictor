@@ -98,9 +98,25 @@ public function update(Request $request, purchase_details $purchase_details)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(purchase_details $purchase_details)
+    public function destroy($id)
     {
         //
+        try {
+        $purchase = purchase_details::findOrFail($id);
+        $purchase->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Purchase deleted successfully.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to delete purchase: ' . $e->getMessage()
+        ], 500);
+    }
+    
+
     }
     public function getProductsByVendor($vendor_id)
 {

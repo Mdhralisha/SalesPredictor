@@ -92,6 +92,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     overflow: hidden; /* no scrollbars */
+    margin-bottom: 30px;
 }
 
 .edit-modal-content {
@@ -105,7 +106,6 @@
     max-height: none;     /* remove height restriction */
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
 
 
     .delete-modal {
@@ -146,12 +146,13 @@
     .btn-cancel:hover {
         background-color: #794b4fff;
     }
-     .table-container {
+    .table-container {
         max-height: 60vh;
         overflow-y: auto;
         border-radius: 0.75rem;
         box-shadow: var(--card-shadow);
     }
+    
 </style>
 
 <div class="container pt-4">

@@ -512,7 +512,7 @@
       @csrf
       @method('DELETE')
       <div class="actions">
-        <button type="submit" class="btn-submit" style="background: green; margin-left: 150px;">Delete</button>
+        <button type="submit" class="btn-submit" style="background: green; margin-left: 150px;" id="confirmDeleteBtn" >Delete</button>
         <button type="button" class="btn-cancel" style="background: red; margin-right: 150px;" onclick="closeDeleteModal()">Cancel</button>
       </div>
     </form>
@@ -819,26 +819,34 @@
     }
 
     // Confirm deletion
-    $('#confirmDeleteBtn').on('click', function() {
-        if (deletePurchaseId) {
-            $.ajax({
-                url: `/purchases/${deletePurchaseId}`,
-                method: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    _method: 'DELETE'
-                },
-                success: function(response) {
-                    alert('Purchase deleted successfully!');
-                    deleteModal.hide();
-                    location.reload();
-                },
-                error: function(xhr) {
-                    alert('Failed to delete purchase. Please try again.');
-                    deleteModal.hide();
-                }
-            });
+   $('#confirmDeleteBtn').on('click', function() {
+    if (!deletePurchaseId) return;
+
+    $.ajax({
+        url: `/purchase/${deletePurchaseId}`,
+        method: 'DELETE',
+        data: {
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            alert(response.message);
+            deleteModal.hide();
+            location.reload();
+        },
+        error: function(xhr) {
+            alert('Failed to delete purchase. Please try again.');
+            deleteModal.hide();
         }
     });
+});
+
+
+
+
+   
+    function closeDeleteModal() {
+        deleteModal.hide();
+        deletePurchaseId = null;
+    }
 </script>
 @endsection

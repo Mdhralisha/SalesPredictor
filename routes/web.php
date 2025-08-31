@@ -129,7 +129,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchase/create', [PurchaseDetailsController::class, 'create'])->name('purchase.create');
     Route::post('/purchase', [PurchaseDetailsController::class, 'store'])->name('purchase.store');
     Route::put('/purchase/{purchase_details}', [PurchaseDetailsController::class, 'update'])->name('purchase.update');
-    Route::delete('/purchase/{purchase_details}', [PurchaseDetailsController::class, 'destroy'])->name('purchase.destroy');
+    Route::delete('/purchase/{id}', [PurchaseDetailsController::class, 'destroy'])->name('purchase.destroy');
     Route::get('/get-products-by-vendor/{vendor_id}', [PurchaseDetailsController::class, 'getProductsByVendor']);
     Route::get('/get-product-price/{product_id}', [PurchaseDetailsController::class, 'getProductDetails']);
     Route::post('/purchases/save-multiple', [PurchaseDetailsController::class, 'saveMultiple'])->name('purchase.saveMultiple');
