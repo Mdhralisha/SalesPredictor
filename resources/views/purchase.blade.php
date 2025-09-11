@@ -21,7 +21,6 @@
 
     .page-title {
         color: var(--primary-color);
-        
         font-weight: 700;
         margin-bottom: 1.5rem;
         padding-bottom: 0.5rem;
@@ -199,80 +198,75 @@
         }
     }
     .modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    /* Ensure it's on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
 
-  }
+    /* Modal Box */
+    .modal-content {
+        background-color: #fff;
+        margin: 0 auto;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
 
+    .modal-content h2 {
+        margin-top: 0;
+        text-align: center;
+    }
 
-  /* Modal Box */
-  .modal-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-  }
+    .modal-content input,
+    .modal-content select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
 
+    .modal-content .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
 
-
-  .modal-content h2 {
-    margin-top: 0;
-    text-align: center;
-  }
-
-  .modal-content input,
-  .modal-content select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-
-  .modal-content .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-  }
-
-  .modal-content .actions button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+    .modal-content .actions button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
     .btn-submit {
-    background-color: #28a745;
-    color: white;
-  }
+        background-color: #28a745;
+        color: white;
+    }
 
-  .btn-cancel {
-    background-color: #dc3545;
-    color: white;
-  }
-   .btn-submit:hover {
-    background-color: #3f6147ff;
-  }
-  .btn-cancel:hover {
-    background-color: #794b4fff;
-  }
+    .btn-cancel {
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-submit:hover {
+        background-color: #3f6147ff;
+    }
+    .btn-cancel:hover {
+        background-color: #794b4fff;
+    }
 </style>
 
 <div class="container">
     <h1 class="page-title py-2">Purchase Management</h1>
 
-    <div class="card mb-4">
+    <div class="card mb-1">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-1">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-search me-2 text-muted"></i>
                     <input type="text" id="searchInput" class="form-control search-box" style="width: 250px;"
@@ -332,7 +326,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="fas fa-cart-plus me-2"></i>Add New Purchase</h5>
-                <!-- <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button> -->
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
 
             <form id="purchaseForm" onsubmit="submitForm(event)" novalidate>
@@ -421,7 +415,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal()">Cancel</button> -->
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> -->
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save me-2"></i> Save Purchase
                     </button>
@@ -505,21 +499,19 @@
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-         <div class="modal-content">
-
-    <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this product?</p>
-    <form id="deleteProductForm" method="POST">
-      @csrf
-      @method('DELETE')
-      <div class="actions">
-        <button type="submit" class="btn-submit" style="background: green; margin-left: 150px;" id="confirmDeleteBtn" >Delete</button>
-        <button type="button" class="btn-cancel" style="background: red; margin-right: 150px;" onclick="closeDeleteModal()">Cancel</button>
-      </div>
-    </form>
-  </div>
+        <div class="modal-content">
+            <p style="text-align: center; font-size: 20px;">Are you sure you want to delete this product?</p>
+            <form id="deleteProductForm" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="actions">
+                    <button type="submit" class="btn-submit" style="background: green; margin-left: 150px;" id="confirmDeleteBtn">Delete</button>
+                    <button type="button" class="btn-cancel" style="background: red; margin-right: 150px;" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -530,15 +522,21 @@
     let grossTotal = 0;
     let deletePurchaseId = null;
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    let purchaseModal = null;
+    let editPurchaseModal = null;
+
+    // Initialize modals when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        purchaseModal = new bootstrap.Modal(document.getElementById('userModal'));
+        editPurchaseModal = new bootstrap.Modal(document.getElementById('editPurchaseModal'));
+    });
 
     function openModal() {
-        const modal = new bootstrap.Modal(document.getElementById('userModal'));
-        modal.show();
+        purchaseModal.show();
     }
 
     function closeModal() {
-        const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
-        modal.hide();
+        purchaseModal.hide();
         resetForm();
     }
 
@@ -650,7 +648,7 @@
             },
             success: function(response) {
                 alert('Purchases saved successfully!');
-                closeModal();
+                closeModal(); // This will now properly close the modal
                 location.reload();
             },
             error: function(xhr) {
@@ -748,32 +746,31 @@
         });
 
         $('#edit_vendor').on('change', function() {
-        const vendorId = $(this).val();
-        const productSelect = $('#edit_product');
-        productSelect.empty().append('<option value="">Loading...</option>');
+            const vendorId = $(this).val();
+            const productSelect = $('#edit_product');
+            productSelect.empty().append('<option value="">Loading...</option>');
 
-        if (vendorId) {
-            $.ajax({
-                url: `/get-products-by-vendor/${vendorId}`,
-                type: 'GET',
-                success: function(data) {
-                    productSelect.empty().append('<option value="">-- Select Product --</option>');
-                    data.forEach(function(product) {
-                        productSelect.append(`<option value="${product.id}">${product.product_name}</option>`);
-                    });
-                },
-                error: function() {
-                    productSelect.empty().append('<option value="">Error loading products</option>');
-                }
-            });
-        } else {
-            productSelect.empty().append('<option value="">-- Select Product --</option>');
-        }
-    });
+            if (vendorId) {
+                $.ajax({
+                    url: `/get-products-by-vendor/${vendorId}`,
+                    type: 'GET',
+                    success: function(data) {
+                        productSelect.empty().append('<option value="">-- Select Product --</option>');
+                        data.forEach(function(product) {
+                            productSelect.append(`<option value="${product.id}">${product.product_name}</option>`);
+                        });
+                    },
+                    error: function() {
+                        productSelect.empty().append('<option value="">Error loading products</option>');
+                    }
+                });
+            } else {
+                productSelect.empty().append('<option value="">-- Select Product --</option>');
+            }
+        });
 
         // Show the modal
-        const modal = new bootstrap.Modal(document.getElementById('editPurchaseModal'));
-        modal.show();
+        editPurchaseModal.show();
 
         // Add event listeners to update total amount when quantity or rate changes
         $('#edit_quantity, #edit_purchaserate').on('input', function() {
@@ -783,31 +780,50 @@
         });
     }
 
-    // Handle edit form submission
-    $('#editPurchaseForm').on('submit', function(e) {
-    e.preventDefault();
-
-    const formData = $(this).serialize();
-    const purchaseId = $('#edit_purchase_id').val();
-
-    $.ajax({
-        url: `/purchase/${purchaseId}`,
-        method: 'PUT', // Use PUT directly
-        data: formData,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-            alert('Purchase updated successfully!');
-            $('#editPurchaseModal').modal('hide');
-            location.reload();
-        },
-        error: function(xhr) {
-            console.error('Error:', xhr.responseText);
-            alert('Failed to update purchase. Please check console for details.');
+        $('#edit_product').on('change', function() {
+        const productId = $(this).val();
+        if (productId) {
+            $.ajax({
+                url: `/get-product-price/${productId}`,
+                type: 'GET',
+                success: function(data) {
+                    $('#edit_purchaserate').val(data.purchase_rate || '');
+                },
+                error: function() {
+                    $('#edit_purchaserate').val('');
+                    alert('Failed to load purchase price.');
+                }
+            });
+        } else {
+            $('#edit_purchaserate').val('');
         }
     });
-});
+
+    // Handle edit form submission
+    $('#editPurchaseForm').on('submit', function(e) {
+        e.preventDefault();
+
+        const formData = $(this).serialize();
+        const purchaseId = $('#edit_purchase_id').val();
+
+        $.ajax({
+            url: `/purchase/${purchaseId}`,
+            method: 'PUT',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                alert('Purchase updated successfully!');
+                editPurchaseModal.hide();
+                location.reload();
+            },
+            error: function(xhr) {
+                console.error('Error:', xhr.responseText);
+                alert('Failed to update purchase. Please check console for details.');
+            }
+        });
+    });
 
     // Delete purchase function
     function deletePurchase(button) {
@@ -819,31 +835,29 @@
     }
 
     // Confirm deletion
-   $('#confirmDeleteBtn').on('click', function() {
-    if (!deletePurchaseId) return;
+    $('#confirmDeleteBtn').on('click', function(e) {
+        e.preventDefault();
+        
+        if (!deletePurchaseId) return;
 
-    $.ajax({
-        url: `/purchase/${deletePurchaseId}`,
-        method: 'DELETE',
-        data: {
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            alert(response.message);
-            deleteModal.hide();
-            location.reload();
-        },
-        error: function(xhr) {
-            alert('Failed to delete purchase. Please try again.');
-            deleteModal.hide();
-        }
+        $.ajax({
+            url: `/purchase/${deletePurchaseId}`,
+            method: 'DELETE',
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                alert(response.message);
+                deleteModal.hide();
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Failed to delete purchase. Please try again.');
+                deleteModal.hide();
+            }
+        });
     });
-});
 
-
-
-
-   
     function closeDeleteModal() {
         deleteModal.hide();
         deletePurchaseId = null;

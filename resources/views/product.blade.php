@@ -224,7 +224,7 @@
      <form action="{{ route('product.store') }}" method="POST">
       @csrf
       <input type="text" id="productname" placeholder="Product Name" required name="productname">
-      <!-- <input type="number" id="productquantity" placeholder="Quantity" required name="productquantity" min="1" step="1" value="0" readonly> -->
+      <input type="number" id="productquantity" placeholder="Quantity" name="productquantity" value="0" hidden>
 
       <select id="productunit" name="productunit" required>
         <option value="">Select Product Unit</option>

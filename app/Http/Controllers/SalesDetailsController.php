@@ -195,4 +195,27 @@ class SalesDetailsController extends Controller
             ], 404);
         }
     }
+public function generateInvoiceNo()
+{
+    // Fetch the latest sale by ID (descending order)
+    $lastSale = sales_details::orderBy('id', 'desc')->first();
+
+    if ($lastSale && preg_match('/SI_(\d+)/', $lastSale->invoice_no, $matches)) {
+        // Increment the numeric part
+        $number = intval($matches[1]) + 1;
+    } else {
+        $number = 1; // Start from 1 if no previous sale exists
+    }
+
+    // Pad with leading zeros to 3 digits (e.g., SI_001, SI_002)
+    return 'SI_' . str_pad($number, 3, '0', STR_PAD_LEFT);
+}
+
+
+    public function latestInvoice()
+    {
+        return response()->json([
+            'invoice_no' => $this->generateInvoiceNo()
+        ]);
+    }
 }

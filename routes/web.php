@@ -15,6 +15,8 @@ use App\Http\Controllers\SalesDetailsController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/sales/latest-invoice', [SalesDetailsController::class, 'latestInvoice'])->name('sales.latestInvoice');
+
 
 Route::get('/login', function () {
     return view('adminlogin');

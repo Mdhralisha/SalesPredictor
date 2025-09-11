@@ -157,7 +157,7 @@
           <td>{{ $sale->product->product_name }}</td>
           <td>{{ $sale->sales_quantity }}</td>
           <td>Rs. {{ number_format($sale->sales_rate, 2) }}</td>
-          <td>Rs. {{ number_format($sale->discount, 2) }}</td>
+          <td>Rs. {{ number_format($sale->sales_discount, 2) }}</td>
           <td>Rs. {{ number_format($sale->sales_rate * $sale->sales_quantity, 2) }}</td>
         </tr>
         @endforeach
