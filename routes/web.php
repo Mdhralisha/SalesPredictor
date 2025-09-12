@@ -16,6 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/sales/latest-invoice', [SalesDetailsController::class, 'latestInvoice'])->name('sales.latestInvoice');
+Route::get('/sales-report', [SalesDetailsController::class, 'getSalesClusters']);
 
 
 Route::get('/login', function () {

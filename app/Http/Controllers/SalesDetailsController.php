@@ -9,6 +9,8 @@ use App\Models\product_details;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class SalesDetailsController extends Controller
 {
@@ -195,21 +197,21 @@ class SalesDetailsController extends Controller
             ], 404);
         }
     }
-public function generateInvoiceNo()
-{
-    // Fetch the latest sale by ID (descending order)
-    $lastSale = sales_details::orderBy('id', 'desc')->first();
+    public function generateInvoiceNo()
+    {
+        // Fetch the latest sale by ID (descending order)
+        $lastSale = sales_details::orderBy('id', 'desc')->first();
 
-    if ($lastSale && preg_match('/SI_(\d+)/', $lastSale->invoice_no, $matches)) {
-        // Increment the numeric part
-        $number = intval($matches[1]) + 1;
-    } else {
-        $number = 1; // Start from 1 if no previous sale exists
+        if ($lastSale && preg_match('/SI_(\d+)/', $lastSale->invoice_no, $matches)) {
+            // Increment the numeric part
+            $number = intval($matches[1]) + 1;
+        } else {
+            $number = 1; // Start from 1 if no previous sale exists
+        }
+
+        // Pad with leading zeros to 3 digits (e.g., SI_001, SI_002)
+        return 'SI_' . str_pad($number, 3, '0', STR_PAD_LEFT);
     }
-
-    // Pad with leading zeros to 3 digits (e.g., SI_001, SI_002)
-    return 'SI_' . str_pad($number, 3, '0', STR_PAD_LEFT);
-}
 
 
     public function latestInvoice()
@@ -218,4 +220,47 @@ public function generateInvoiceNo()
             'invoice_no' => $this->generateInvoiceNo()
         ]);
     }
+
+    public function getSalesClusters()
+    {
+        // Fetch sales data with related product info
+        $sales = DB::table('sales_details')
+            ->join('product_details', 'sales_details.product_id', '=', 'product_details.id')
+            ->select(
+                'product_details.id as product_id',
+                'product_details.product_name',
+                DB::raw('SUM(sales_details.sales_quantity) as total_quantity'),
+                DB::raw('SUM(sales_details.sales_rate*sales_details.sales_quantity) as total_amount')
+            )
+            ->groupBy('product_details.id', 'product_details.product_name')
+            ->get();
+
+
+        $results = [];
+
+        foreach ($sales as $sale) {
+            try {
+                // Call Flask API for clustering
+                $response = Http::post('http://127.0.0.1:5000/predict', [
+                    'net_amount' => $sale->total_amount,       // Replace with Net Amount if needed
+                    'quantity'   => $sale->total_quantity
+                ]);
+
+                if ($response->successful()) {
+                    $clusterData = $response->json();
+                    $sale->cluster = $clusterData['cluster'];
+                } else {
+                    $sale->cluster = "Error";
+                }
+            } catch (\Exception $e) {
+                $sale->cluster = "API Error";
+            }
+
+            $results[] = $sale;
+        }
+
+        return view('salesclusteringreport', compact('results'));
+    }
+
+
 }

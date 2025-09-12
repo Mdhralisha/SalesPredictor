@@ -93,7 +93,7 @@
           <option value="purchase">Purchase Report</option>
           <option value="inventory">Inventory Report</option>
           <option value="salesanalysis1">Sales Prediction Report</option>
-           <option value="salesanalysis1">Sales Clustering Report</option>
+           <option value="salesanalysis2">Sales Clustering Report</option>
         </select>
       </div>
 
@@ -134,7 +134,7 @@
         routeUrl = `/salespredictreport?from=${fromDate}&to=${toDate}`;
         break;
       case "salesanalysis2":
-        routeUrl = `/salesclusteringreport?from=${fromDate}&to=${toDate}`;
+        routeUrl = `/sales-report?from=${fromDate}&to=${toDate}`;
         break;
       default:
         alert("Invalid report type selected.");
