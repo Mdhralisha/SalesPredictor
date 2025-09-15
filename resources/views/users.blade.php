@@ -209,6 +209,10 @@ Edit</button>
       <!-- Password fields -->
       <input type="password" id="password" name="password" placeholder="Password" required>
       <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+     <small id="passwordError" class="text-danger" style="display:none;">
+    Passwords do not match.
+</small>
+
 
       <select id="user_role" name="user_role" required>
         <option value="">Select Role</option>
@@ -297,6 +301,34 @@ function closeDeleteModal() {
       row.style.display = row.innerText.toLowerCase().includes(input) ? '' : 'none';
     });
   }
+
+
+
+  // passwords match validation
+  document.getElementById('password_confirmation').addEventListener('input', function () {
+    let password = document.getElementById('password').value;
+    let confirm = document.getElementById('password_confirmation').value;
+    let errorMsg = document.getElementById('passwordError');
+
+    if (confirm !== password) {
+        errorMsg.style.display = 'block';
+    } else {
+        errorMsg.style.display = 'none';
+    }
+});
+
+// Prevent form submit if mismatch
+document.querySelector('#userModal form').addEventListener('submit', function (e) {
+    let password = document.getElementById('password').value;
+    let confirm = document.getElementById('password_confirmation').value;
+    let errorMsg = document.getElementById('passwordError');
+
+    if (password !== confirm) {
+        e.preventDefault(); // stop submit
+        errorMsg.style.display = 'block';
+    }
+});
+
 </script>
 <div class="modal" id="editModal">
   <div class="modal-content">
@@ -338,6 +370,7 @@ function closeDeleteModal() {
     </form>
   </div>
 </div>
+
 
 
 

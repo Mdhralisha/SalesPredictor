@@ -48,6 +48,8 @@ Route::post('/logout', function () {
 Route::get('/inventory', function () {
     return view('landingpage');
 });
+Route::get('/sales-prediction-report', [SalesDetailsController::class, 'showPredictionReport'])->name('sales.prediction.report');
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {

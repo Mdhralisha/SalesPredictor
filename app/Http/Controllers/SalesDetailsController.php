@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class SalesDetailsController extends Controller
 {
@@ -263,4 +264,64 @@ class SalesDetailsController extends Controller
     }
 
 
+    public function salesPredictReport(Request $request)
+    {
+        // 1. Get the prediction year and month from the frontend
+        $predictYear = $request->input('predict_year');
+        $predictMonth = $request->input('predict_month');
+
+        if (!$predictYear || !$predictMonth) {
+            return back()->with('error', 'Prediction year and month are required.');
+        }
+
+        // 2. Fetch and group all historical sales data
+        $salesData = DB::table('sales_details')
+            ->leftJoin('product_details', 'sales_details.product_id', '=', 'product_details.id')
+            ->leftJoin('category_details', 'product_details.category_id', '=', 'category_details.id')
+            ->select(
+                'product_details.product_name',
+                'product_details.id',
+                'category_details.category_name as mcat',
+                DB::raw('SUM(sales_quantity * sales_details.sales_rate) as net_amount'),
+                DB::raw('SUM(sales_quantity) as total_quantity'),
+                DB::raw('AVG(sales_details.sales_rate) as rate'),
+                DB::raw('SUM(sales_discount) as discount_amt')
+            )
+            ->groupBy(
+                'product_details.id',
+                'product_details.product_name',
+                'category_details.category_name'
+            )
+            ->get();
+
+        $reportData = [];
+
+        foreach ($salesData as $record) {
+            try {
+                // 3. Send request to the prediction API
+                $response = Http::post('http://127.0.0.1:5000/predict_quantity', [
+                    'Year' => (int) $predictYear,
+                    'Month' => (int) $predictMonth,
+                    'DISCOUNTAMNT' => (float) ($record->discount_amt ?? 0),
+                    'RATE' => (float) ($record->rate ?? 0),
+                    'MCAT' => $record->mcat ?? 'Unknown',
+                ]);
+
+                $prediction = $response->successful()
+                    ? $response->json()['predicted_quantity']
+                    : 'API Error';
+            } catch (\Exception $e) {
+                Log::error('Prediction API error: ' . $e->getMessage());
+                $prediction = 'API Down';
+            }
+
+            $reportData[] = [
+                'product_name' => $record->product_name,
+                'item_code' => $record->id,
+                'prediction' => $prediction,
+            ];
+        }
+
+        return view('salespredictreport', compact('reportData', 'predictYear', 'predictMonth'));
+    }
 }
