@@ -156,6 +156,11 @@
       <button class="createbtn" onclick="openModal()" value="Create User">
   <i class="fas fa-plus-circle me-2"></i> Create Users</button>
   </div>
+   @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
   <div style="height: 60vh;overflow-y:scroll">
     <table class="table table-bordered">
       <thead>

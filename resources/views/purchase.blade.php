@@ -276,6 +276,11 @@
                     <i class="fas fa-plus-circle me-2"></i> Add New Purchase
                 </button>
             </div>
+             @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
 
             <div class="table-container">
                 <table class="table table-hover">

@@ -266,7 +266,7 @@ class SalesDetailsController extends Controller
 
     public function salesPredictReport(Request $request)
     {
-        // 1. Get the prediction year and month from the frontend
+       
         $predictYear = $request->input('predict_year');
         $predictMonth = $request->input('predict_month');
 

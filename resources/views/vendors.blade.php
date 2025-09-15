@@ -178,6 +178,11 @@
   <i class="fas fa-plus-circle me-2"></i> Add Vendor
 </button>
       </div>
+       @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
   <div style="height: 60vh;overflow-y:scroll">
       <table class="table table-bordered">
           <thead>
