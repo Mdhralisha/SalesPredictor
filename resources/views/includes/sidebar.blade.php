@@ -72,6 +72,12 @@
               <p> Report Management</p>
             </a>
           </li>
+          <li class="nav-item">
+              <a href="../sales-prediction-report" class="nav-link">
+                <i class="fas fa-file-alt"></i>
+                <p> Sales Prediction Report</p>
+              </a>
+            </li>
         </ul>
       </nav>
     </div>
