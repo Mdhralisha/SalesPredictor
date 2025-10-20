@@ -161,6 +161,12 @@ public function saveMultiple(Request $request)
             'purchase_discount' => $purchase['purchase_discount'] ?? 0, // default 0 if not set
             'created_by' => 1,
         ]);
+
+        $product = product_details::find($purchase['product_id']);
+        if ($product) {
+            $product->product_quantity += $purchase['quantity'];
+            $product->save();
+        }
     }
 
     return response()->json(['message' => 'Purchases saved successfully']);

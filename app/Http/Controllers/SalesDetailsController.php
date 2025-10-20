@@ -158,6 +158,19 @@ class SalesDetailsController extends Controller
             $savedSales = [];
 
             foreach ($request->sales as $saleData) {
+                $product = product_details::find($saleData['product_id']);
+
+                if (!$product) {
+                    throw new \Exception('Product not found.');
+                }
+
+                if ($product->product_quantity < $saleData['quantity']) {
+                    throw new \Exception("Insufficient stock for product: {$product->product_name}. Available: {$product->product_quantity}");
+                }
+
+                $product->product_quantity -= $saleData['quantity'];
+                $product->save();
+
                 $sale = sales_details::create([
                     'invoice_no' => $saleData['invoice_no'],
                     'product_id' => $saleData['product_id'],
@@ -262,82 +275,79 @@ class SalesDetailsController extends Controller
 
         return view('salesclusteringreport', compact('results'));
     }
-public function salesPredictReport(Request $request)
-{
-    // Fetch historical sales data
-    $salesData = DB::table('sales_details')
-        ->leftJoin('product_details', 'sales_details.product_id', '=', 'product_details.id')
-        ->leftJoin('category_details', 'product_details.category_id', '=', 'category_details.id')
-        ->select(
-            'product_details.product_name',
-            'product_details.id',
-            'category_details.category_name as mcat',
-            'product_details.product_unit as product_unit',
-            DB::raw('SUM(sales_quantity * sales_details.sales_rate) as net_amount'),
-            DB::raw('SUM(sales_quantity) as total_quantity'),
-            DB::raw('AVG(sales_details.sales_rate) as rate'),
-            DB::raw('SUM(sales_discount) as discount_amt')
-        )
-        ->groupBy(
-            'product_details.id',
-            'product_details.product_name',
-            'category_details.category_name',
-            'product_details.product_unit'
-        )
-        ->get();
+    public function salesPredictReport(Request $request)
+    {
+        // Fetch historical sales data
+        $salesData = DB::table('sales_details')
+            ->leftJoin('product_details', 'sales_details.product_id', '=', 'product_details.id')
+            ->leftJoin('category_details', 'product_details.category_id', '=', 'category_details.id')
+            ->select(
+                'product_details.product_name',
+                'product_details.id',
+                'category_details.category_name as mcat',
+                'product_details.product_unit as product_unit',
+                DB::raw('SUM(sales_quantity * sales_details.sales_rate) as net_amount'),
+                DB::raw('SUM(sales_quantity) as total_quantity'),
+                DB::raw('AVG(sales_details.sales_rate) as rate'),
+                DB::raw('SUM(sales_discount) as discount_amt')
+            )
+            ->groupBy(
+                'product_details.id',
+                'product_details.product_name',
+                'category_details.category_name',
+                'product_details.product_unit'
+            )
+            ->get();
 
-    $reportData = [];
-    $startDate = Carbon::today();
+        $reportData = [];
+        $startDate = Carbon::today();
 
-    foreach ($salesData as $record) {
+        foreach ($salesData as $record) {
 
-        $productPredictions = [];
-        $totalPredictedSales = 0; // new variable to hold total predicted quantity
+            $productPredictions = [];
+            $totalPredictedSales = 0; // new variable to hold total predicted quantity
 
-        // Predict for 90 days (~3 months)
-        for ($i = 0; $i < 90; $i++) {
-            $predictDate = $startDate->copy()->addDays($i)->format('Y-m-d');
+            // Predict for 90 days (~3 months)
+            for ($i = 0; $i < 90; $i++) {
+                $predictDate = $startDate->copy()->addDays($i)->format('Y-m-d');
 
-            try {
-                $response = Http::post('http://127.0.0.1:5000/xgb/predict', [
-                    'TRNDATE' => $predictDate,
-                    'MCAT' => $record->mcat ?? 'Unknown',
-                    'UNIT' => $record->product_unit ?? 'PCS',
-                    'Discount' => $record->discount_amt > 0 ? 1 : 0,
-                    'RATE' => (float) ($record->rate ?? 0),
-                    'QUANTITY' => (float) ($record->total_quantity ?? 0),
-                    'Net Amount' => (float) ($record->net_amount ?? 0)
-                ]);
+                try {
+                    $response = Http::post('http://127.0.0.1:5000/xgb/predict', [
+                        'TRNDATE' => $predictDate,
+                        'MCAT' => $record->mcat ?? 'Unknown',
+                        'UNIT' => $record->product_unit ?? 'PCS',
+                        'Discount' => $record->discount_amt > 0 ? 1 : 0,
+                        'RATE' => (float) ($record->rate ?? 0),
+                        'QUANTITY' => (float) ($record->total_quantity ?? 0),
+                        'Net Amount' => (float) ($record->net_amount ?? 0)
+                    ]);
 
-                $predictedQuantity = $response->successful()
-                    ? $response->json()['predicted_quantity']
-                    : null;
+                    $predictedQuantity = $response->successful()
+                        ? $response->json()['predicted_quantity']
+                        : null;
 
-                if ($predictedQuantity !== null) {
-                    $totalPredictedSales += $predictedQuantity; // accumulate
+                    if ($predictedQuantity !== null) {
+                        $totalPredictedSales += $predictedQuantity; // accumulate
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Prediction API error: ' . $e->getMessage());
+                    $predictedQuantity = null;
                 }
-            } catch (\Exception $e) {
-                Log::error('Prediction API error: ' . $e->getMessage());
-                $predictedQuantity = null;
+
+                $productPredictions[] = [
+                    'date' => $predictDate,
+                    'predicted_quantity' => $predictedQuantity
+                ];
             }
 
-            $productPredictions[] = [
-                'date' => $predictDate,
-                'predicted_quantity' => $predictedQuantity
+            $reportData[] = [
+                'product_name' => $record->product_name,
+                'item_code' => $record->id,
+                'predictions' => $productPredictions,
+                'total_predicted_sales' => $totalPredictedSales // new field
             ];
         }
 
-        $reportData[] = [
-            'product_name' => $record->product_name,
-            'item_code' => $record->id,
-            'predictions' => $productPredictions,
-            'total_predicted_sales' => $totalPredictedSales // new field
-        ];
+        return view('salespredictreport', compact('reportData'));
     }
-
-    return view('salespredictreport', compact('reportData'));
 }
-
-}
-
-    
