@@ -117,8 +117,12 @@
 <script>
   // Initialize charts (round data values)
   const charts = {};
+
   @foreach ($reportData as $product)
-    const ctx{{ $product['item_code'] }} = document.getElementById('chart-{{ $product['item_code'] }}').getContext('2d');
+    const ctx{{ $product['item_code'] }} = document
+      .getElementById('chart-{{ $product['item_code'] }}')
+      .getContext('2d');
+
     charts["{{ $product['item_code'] }}"] = new Chart(ctx{{ $product['item_code'] }}, {
       type: 'line',
       data: {
@@ -147,7 +151,15 @@
           title: { display: true, text: '90-Day Predicted Sales' }
         },
         scales: {
-          y: { beginAtZero: true }
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                // ✅ Show only whole numbers on Y-axis
+                return Number.isInteger(value) ? value : null;
+              }
+            }
+          }
         }
       }
     });
@@ -162,5 +174,6 @@
     }
   });
 </script>
+
 </body>
 </html>
