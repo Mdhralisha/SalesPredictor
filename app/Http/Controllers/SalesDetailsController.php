@@ -117,21 +117,13 @@ class SalesDetailsController extends Controller
             $sale = sales_details::findOrFail($id);
             $sale->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Sale deleted successfully!'
-            ]);
+            return redirect()->route('sales.index')->with('success', 'Sale Deleted successfully!');
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sale not found'
-            ], 404);
+            return redirect()->route('sales.index')->with('success', 'Deletion Failed!');
         } catch (\Exception $e) {
             Log::error('Error deleting sale: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error deleting sale: ' . $e->getMessage()
-            ], 500);
+            return redirect()->route('sales.index')->with('success', 'Deletion Failed!');
         }
     }
 

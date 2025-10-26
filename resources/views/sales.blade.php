@@ -472,7 +472,6 @@
                 sales
             }),
             success: function(resp) {
-                alert(resp.message || 'Saved!');
                 closeModal();
                 location.reload();
             },
@@ -483,7 +482,6 @@
                 } else if (xhr.responseJSON && xhr.responseJSON.error) {
                     errMsg = xhr.responseJSON.error;
                 }
-                alert(errMsg);
             }
         });
     }
