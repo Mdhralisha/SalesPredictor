@@ -78,6 +78,12 @@
                 <p> Sales Prediction Report</p>
               </a>
             </li>
+                      <li class="nav-item">
+              <a href="../sales-report" class="nav-link">
+                <i class="fas fa-file-alt"></i>
+                <p> Sales Clustering Report</p>
+              </a>
+            </li>
         </ul>
       </nav>
     </div>

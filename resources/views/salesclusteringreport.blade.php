@@ -110,10 +110,6 @@
 
   <div class="text-center mb-4">
     <h1 class="report-title">Sales Clustering Report</h1>
-    <p class="date-range">
-      From: <strong>2025-07-01</strong> &nbsp;&nbsp;&nbsp;
-      To: <strong>2025-07-31</strong>
-    </p>
   </div>
 
   <!-- Donut Chart -->
