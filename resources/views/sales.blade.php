@@ -145,11 +145,11 @@
             <i class="fas fa-plus-circle me-2"></i> Add Sales
         </button>
     </div>
-     @if(session('success'))
-          <div class="alert alert-success">
-              {{ session('success') }}
-          </div>
-      @endif
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <div class="table-container">
         <table class="table table-bordered">
@@ -168,7 +168,7 @@
             </thead>
             <tbody>
                 @foreach ($sales as $index => $sale)
-                <tr data-sale-id="{{ $sale->id }}">
+                <tr data-sale-id="{{ $sale->id }}" data-product-id="{{ $sale->product_id }}" data-customer-id="{{ $sale->customer_id }}">
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $sale->invoice_no }}</td>
                     <td>{{ $sale->product->product_name ?? 'N/A' }}</td>
@@ -289,7 +289,8 @@
             <input type="hidden" id="edit_sale_id" name="id">
 
             <div class="form-group">
-                <input type="text" class="form-control" id="edit_invoice_no" name="invoice_no" required hidden>
+                <label for="edit_customer">invoice no:</label>
+                <input type="text" class="form-control" id="edit_invoice_no" name="invoice_no" required >
             </div>
 
             <div class="form-group">
@@ -526,12 +527,14 @@
     function editSales(btn) {
         const row = $(btn).closest('tr');
         const saleId = row.data('sale-id');
-        const customerId = row.find('td:eq(7)').text();
-        const productId = row.find('td:eq(2)').text();
-        const quantity = row.find('td:eq(3)').text();
-        const salesRate = row.find('td:eq(4)').text();
-        const discount = row.find('td:eq(5)').text();
-        const invoiceNo = row.find('td:eq(1)').text();
+        const invoiceNo = row.find('td:eq(1)').text().trim();
+        const quantity = parseInt(row.find('td:eq(3)').text().trim());
+        const salesRate = parseFloat(row.find('td:eq(4)').text().replace('Rs', '').trim());
+        const discount = parseFloat(row.find('td:eq(5)').text().replace('Rs', '').trim()) || 0;
+
+        // Get data from dataset attributes in <tr> to ensure correct IDs
+        const productId = row.data('product-id');
+        const customerId = row.data('customer-id');
 
         $('#edit_sale_id').val(saleId);
         $('#edit_invoice_no').val(invoiceNo);
@@ -559,5 +562,50 @@
     function closeDeleteModal() {
         $('#deleteSalesModal').fadeOut();
     }
+    function updateEditTotal() {
+    const quantity = parseFloat($('#edit_quantity').val()) || 0;
+    const salesRate = parseFloat($('#edit_sales_rate').val()) || 0;
+    const discount = parseFloat($('#edit_discount').val()) || 0;
+
+    const total = (quantity * salesRate) - discount;
+    $('#edit_total_amount').val(total.toFixed(2));
+}
+
+// Add event listeners
+$('#edit_quantity, #edit_sales_rate, #edit_discount').on('input', updateEditTotal);
+
+// Handle Edit Sales form submission
+$('#editSalesForm').on('submit', function(e) {
+    e.preventDefault();
+
+    const saleId = $('#edit_sale_id').val();
+    const data = {
+        _token: '{{ csrf_token() }}',
+        customer_id: $('#edit_customer').val(),
+        product_id: $('#edit_product').val(),
+        invoice_no: $('#edit_invoice_no').val(),
+        sales_quantity: $('#edit_quantity').val(),
+        sales_rate: $('#edit_sales_rate').val(),
+        sales_discount: $('#edit_discount').val(),
+    };
+
+    $.ajax({
+        url: `/sales/${saleId}`, // matches your route
+        method: 'PUT',
+        data: data,
+        success: function(resp) {
+            alert('Sale updated successfully!');
+            closeEditModal();
+            location.reload();
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText);
+            let msg = 'Failed to update sale.';
+            closeEditModal();
+            location.reload();
+        }
+    });
+});
+
 </script>
 @endsection

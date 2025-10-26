@@ -91,22 +91,31 @@ class SalesDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, sales_details $sales_details)
-    {
-        $validator = Validator::make($request->all(), [
-            'invoice_no' => 'required|string|max:255',
-            'customer_id' => 'required|exists:customer_details,id',
-            'product_id' => 'required|exists:product_details,id',
-            'sales_quantity' => 'required|integer|min:1',
-            'sales_rate' => 'required|numeric|min:0',
-            'sales_discount' => 'nullable|numeric|min:0',
-        ]);
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'invoice_no' => 'required|string|max:255',
+        'customer_id' => 'required|exists:customer_details,id',
+        'product_id' => 'required|exists:product_details,id',
+        'sales_quantity' => 'required|integer|min:1',
+        'sales_rate' => 'required|numeric|min:0',
+        'sales_discount' => 'nullable|numeric|min:0',
+    ]);
 
+    $sale = sales_details::findOrFail($id);
 
-        $sales_details->update($validator->validated());
+    $sale->update([
+        'invoice_no' => $request->invoice_no,
+        'customer_id' => $request->customer_id,
+        'product_id' => $request->product_id,
+        'sales_quantity' => $request->sales_quantity,
+        'sales_rate' => $request->sales_rate,
+        'sales_discount' => $request->sales_discount ?? 0,
+    ]);
 
-        return response()->json(['message' => 'Sales updated successfully']);
-    }
+    return redirect()->route('sales.index')->with('success', 'Sale updated successfully!');
+}
+
 
     /**
      * Remove the specified resource from storage.
