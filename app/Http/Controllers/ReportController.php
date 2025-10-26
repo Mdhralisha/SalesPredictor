@@ -64,7 +64,7 @@ class ReportController extends Controller
                 DB::raw('SUM(purchase_quantity) as total_purchase_qty'),
                 DB::raw('AVG(purchase_rate) as purchase_rate')
             )
-            ->whereBetween('created_at', [$fromDateTime, $toDateTime])
+            ->where('created_at', '<=', $toDateTime)
             ->groupBy('product_id');
 
         $salesAgg = DB::table('sales_details')
