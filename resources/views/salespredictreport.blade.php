@@ -4,44 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3-Month Sales Prediction Report</title>
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- ✅ Use latest stable html2pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    .a4-report {
+      width: 210mm;
+      min-height: 160mm;
+      margin: auto;
+      padding: 20mm;
+      background: white;
+      box-shadow: 0 0 5px 10px rgba(5, 4, 4, 0.1);
+      font-family: 'Segoe UI', sans-serif;
+      position: relative;
+    }
+    .report-title { font-size: 32px; color: #0c337c; font-weight: 700; }
+    .date-range { font-size: 16px; margin: 10px 0 20px; }
+    .report-table { font-size: 14px; width: 100%; margin-bottom: 30px; }
+    .report-table thead { background-color: #1f4870ff; color: white; }
+    .report-table th, .report-table td {
+      text-align: center; padding: 8px; border: 1px solid #ccc;
+    }
+
+    /* PDF Button */
+    .export-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .export-btn:hover { background-color: #a71d2a; }
+
+    /* Print Optimization */
+    @media print {
+      body * { visibility: hidden; }
+      .a4-report, .a4-report * { visibility: visible; }
+      .a4-report { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; box-shadow: none; }
+      .export-btn { display: none; }
+    }
+  </style>
 </head>
 
-<style>
-.a4-report {
-  width: 210mm;
-  min-height: 160mm;
-  margin: auto;
-  padding: 20mm;
-  background: white;
-  box-shadow: 0 0 5px 10px rgba(5, 4, 4, 0.1);
-  font-family: 'Segoe UI', sans-serif;
-  position: relative;
-}
-.report-title { font-size: 32px; color: #0c337c; font-weight: 700; }
-.date-range { font-size: 16px; margin: 10px 0 20px; }
-.report-table { font-size: 14px; width: 100%; margin-bottom: 30px; }
-.report-table thead { background-color: #1f4870ff; color: white; }
-.report-table th, .report-table td { text-align: center; padding: 8px; border: 1px solid #ccc; }
-.export-icon { position: absolute; top: 20px; right: 20px; font-size: 28px; color: #dc3545; }
-.export-icon:hover { color: #a71d2a; }
-@media print {
-  body * { visibility: hidden; }
-  .a4-report, .a4-report * { visibility: visible; }
-  .a4-report { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; box-shadow: none; }
-  .export-icon { display: none; }
-}
-</style>
-
 <body>
-<div class="container mt-5 a4-report">
+<div class="container mt-5 a4-report" id="salesReportContainer">
 
-  <!-- Export PDF button -->
-  <a href="/sales-predict-report/pdf" target="_blank" class="export-icon" title="Export to PDF">
-    <i class="fas fa-file-pdf"></i>
-  </a>
+  <!-- Generate PDF Button -->
+  <button id="generatePdfBtn" class="export-btn">
+    <i class="fas fa-file-pdf"></i> Export PDF
+  </button>
 
   <div class="text-center mb-4">
     <h1 class="report-title">3-Month Sales Prediction Report</h1>
@@ -87,15 +107,11 @@
             <tbody>
               @php
                 $monthlyTotals = collect($product['predictions'])
-                  ->groupBy(function($p) {
-                      return \Carbon\Carbon::parse($p['date'])->format('Y-m');
-                  })
-                  ->map(function($group) {
-                      return [
-                          'month' => \Carbon\Carbon::parse($group->last()['date'])->format('F Y'),
-                          'total' => round($group->sum('predicted_quantity'))
-                      ];
-                  });
+                  ->groupBy(fn($p) => \Carbon\Carbon::parse($p['date'])->format('Y-m'))
+                  ->map(fn($group) => [
+                      'month' => \Carbon\Carbon::parse($group->last()['date'])->format('F Y'),
+                      'total' => round($group->sum('predicted_quantity'))
+                  ]);
               @endphp
 
               @foreach ($monthlyTotals as $monthData)
@@ -115,14 +131,10 @@
 </div>
 
 <script>
-  // Initialize charts (round data values)
+  // Initialize charts
   const charts = {};
-
   @foreach ($reportData as $product)
-    const ctx{{ $product['item_code'] }} = document
-      .getElementById('chart-{{ $product['item_code'] }}')
-      .getContext('2d');
-
+    const ctx{{ $product['item_code'] }} = document.getElementById('chart-{{ $product['item_code'] }}').getContext('2d');
     charts["{{ $product['item_code'] }}"] = new Chart(ctx{{ $product['item_code'] }}, {
       type: 'line',
       data: {
@@ -146,21 +158,8 @@
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: true },
-          title: { display: true, text: '90-Day Predicted Sales' }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function(value) {
-                // ✅ Show only whole numbers on Y-axis
-                return Number.isInteger(value) ? value : null;
-              }
-            }
-          }
-        }
+        plugins: { legend: { display: true }, title: { display: true, text: '90-Day Predicted Sales' } },
+        scales: { y: { beginAtZero: true, ticks: { callback: val => Number.isInteger(val) ? val : null } } }
       }
     });
   @endforeach
@@ -169,11 +168,66 @@
   document.getElementById('productSelect').addEventListener('change', function() {
     const selected = this.value;
     document.querySelectorAll('.prediction-section').forEach(sec => sec.classList.add('d-none'));
-    if (selected) {
-      document.getElementById('section-' + selected).classList.remove('d-none');
-    }
+    if (selected) document.getElementById('section-' + selected).classList.remove('d-none');
+  });
+
+  // ✅ Generate PDF (with Chart Image Fix)
+  document.getElementById('generatePdfBtn').addEventListener('click', async function () {
+    const btn = document.getElementById('generatePdfBtn');
+    btn.style.display = 'none'; // hide button before capture
+
+    const container = document.getElementById('salesReportContainer');
+    const clone = container.cloneNode(true);
+
+    // Hide dropdown in PDF
+    const select = clone.querySelector('#productSelect');
+    if (select) select.style.display = 'none';
+
+    // Keep only visible section
+    clone.querySelectorAll('.prediction-section').forEach(sec => {
+      if (sec.classList.contains('d-none')) sec.remove();
+    });
+
+    // ✅ Convert all charts to images
+    const originalCanvases = document.querySelectorAll('canvas');
+    const clonedCanvases = clone.querySelectorAll('canvas');
+
+    originalCanvases.forEach((canvas, index) => {
+      try {
+        const imageURL = canvas.toDataURL('image/png', 1.0);
+        const img = document.createElement('img');
+        img.src = imageURL;
+        img.style.width = canvas.clientWidth + 'px';
+        img.style.height = canvas.clientHeight + 'px';
+        clonedCanvases[index].replaceWith(img);
+      } catch (err) {
+        console.error('Canvas conversion failed:', err);
+      }
+    });
+
+    // Wait for all images to render
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    // ✅ Generate and download PDF
+    html2pdf()
+      .set({
+        margin: 5,
+        filename: 'sales_report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      })
+      .from(clone)
+      .save()
+      .then(() => {
+        btn.style.display = 'block'; // show button again
+      })
+      .catch(err => {
+        console.error('PDF generation failed:', err);
+        alert('Failed to generate PDF. Check console for details.');
+        btn.style.display = 'block';
+      });
   });
 </script>
-
 </body>
 </html>
