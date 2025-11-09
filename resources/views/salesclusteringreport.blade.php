@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <style>
-/* A4 Report Styling */
 .a4-report {
   width: 210mm;
   min-height: 160mm;
@@ -21,33 +21,25 @@
   font-family: 'Segoe UI', sans-serif;
   position: relative;
 }
-
-/* Title */
 .report-title {
   font-size: 32px;
   color: #0c337c;
   font-weight: 700;
 }
-
-/* Date Centering */
 .date-range {
   font-size: 16px;
   color: #333;
   margin-top: 25px;
   margin-bottom: 20px;
 }
-
-/* Report Table */
 .report-table {
   font-size: 14px;
   width: 100%;
 }
-
 .report-table thead {
   background-color: #1f4870ff;
   color: white;
 }
-
 .report-table th,
 .report-table td {
   text-align: center;
@@ -55,8 +47,6 @@
   padding: 8px;
   border: 1px solid #ccc;
 }
-
-/* Export Button */
 .export-btn {
   position: absolute;
   top: 20px;
@@ -67,46 +57,26 @@
   padding: 8px 16px;
   border-radius: 6px;
   font-weight: 500;
-  text-decoration: none;
 }
-
 .export-btn:hover {
   background-color: #a71d2a;
-  text-decoration: none;
   color: white;
 }
-
-/* Print Optimization */
 @media print {
   body * { visibility: hidden; }
   .a4-report, .a4-report * { visibility: visible; }
   .a4-report { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; box-shadow: none; }
   .export-btn { display: none; }
 }
-
-.export-icon {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 28px;
-  color: #dc3545;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.export-icon:hover {
-  color: #a71d2a;
-  text-decoration: none;
-}
 </style>
 
 <body>
-<div class="container mt-5 a4-report">
+<div class="container mt-5 a4-report" id="reportContainer">
 
   <!-- Export to PDF Button -->
-  <a href="/purchase-report/pdf" target="_blank" class="export-icon" title="Export to PDF">
-    <i class="fas fa-file-pdf"></i>
-  </a>
+  <button id="exportPdfBtn" class="export-btn">
+    <i class="fas fa-file-pdf"></i> Export PDF
+  </button>
 
   <div class="text-center mb-4">
     <h1 class="report-title">Sales Clustering Report</h1>
@@ -147,21 +117,21 @@
 </div>
 
 <script>
-  // Count clusters
+  // Build cluster count
   const clusterCounts = {};
   @foreach($results as $sale)
       clusterCounts['{{ $sale->cluster }}'] = (clusterCounts['{{ $sale->cluster }}'] || 0) + 1;
   @endforeach
 
+  // Draw Chart.js donut chart
   const ctx = document.getElementById('clusterDonutChart').getContext('2d');
   const clusterDonutChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
           labels: Object.keys(clusterCounts),
           datasets: [{
-              label: 'Sales Clusters',
               data: Object.values(clusterCounts),
-              backgroundColor: ['#28a745', '#dc3545', '#007bff'], // High, Low, Average Sales
+              backgroundColor: ['#28a745', '#dc3545', '#007bff'],
               borderColor: '#fff',
               borderWidth: 2
           }]
@@ -169,15 +139,34 @@
       options: {
           responsive: true,
           plugins: {
-              legend: {
-                  position: 'bottom',
-              },
+              legend: { position: 'bottom' },
               title: {
                   display: true,
                   text: 'Cluster Distribution'
               }
           }
       }
+  });
+
+  // Export PDF with chart visible
+  document.getElementById('exportPdfBtn').addEventListener('click', async function () {
+    const button = this;
+    button.style.display = 'none'; // hide temporarily
+    const element = document.getElementById('reportContainer');
+
+    // Ensure chart is rendered to canvas before PDF generation
+    await new Promise(r => setTimeout(r, 800));
+
+    const options = {
+      margin:       10,
+      filename:     'sales_clustering_report.pdf',
+      image:        { type: 'jpeg', quality: 1 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    await html2pdf().set(options).from(element).save();
+    button.style.display = 'block'; // show again after download
   });
 </script>
 
