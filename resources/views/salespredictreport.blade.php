@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- ✅ Use latest stable html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
@@ -131,7 +130,7 @@
 </div>
 
 <script>
-  // Initialize charts
+  // Initialize all charts
   const charts = {};
   @foreach ($reportData as $product)
     const ctx{{ $product['item_code'] }} = document.getElementById('chart-{{ $product['item_code'] }}').getContext('2d');
@@ -164,18 +163,19 @@
     });
   @endforeach
 
-  // Show/Hide prediction sections based on dropdown
+  // Show/Hide prediction sections
   document.getElementById('productSelect').addEventListener('change', function() {
     const selected = this.value;
     document.querySelectorAll('.prediction-section').forEach(sec => sec.classList.add('d-none'));
     if (selected) document.getElementById('section-' + selected).classList.remove('d-none');
   });
 
-  // ✅ Generate PDF (with Chart Image Fix)
+  // ✅ Enhanced PDF Export Logic
   document.getElementById('generatePdfBtn').addEventListener('click', async function () {
     const btn = document.getElementById('generatePdfBtn');
-    btn.style.display = 'none'; // hide button before capture
+    btn.style.display = 'none';
 
+    const selectedItem = document.getElementById('productSelect').value;
     const container = document.getElementById('salesReportContainer');
     const clone = container.cloneNode(true);
 
@@ -183,12 +183,21 @@
     const select = clone.querySelector('#productSelect');
     if (select) select.style.display = 'none';
 
-    // Keep only visible section
-    clone.querySelectorAll('.prediction-section').forEach(sec => {
-      if (sec.classList.contains('d-none')) sec.remove();
+    // STEP 1: Show relevant sections (selected or all)
+    const sections = document.querySelectorAll('.prediction-section');
+    sections.forEach(sec => {
+      if (!selectedItem || sec.id === 'section-' + selectedItem) {
+        sec.classList.remove('d-none');
+        sec.style.display = 'block';
+      } else {
+        sec.classList.add('d-none');
+      }
     });
 
-    // ✅ Convert all charts to images
+    // Wait to ensure all visible charts are rendered
+    await new Promise(resolve => setTimeout(resolve, 600));
+
+    // STEP 2: Convert canvases to images
     const originalCanvases = document.querySelectorAll('canvas');
     const clonedCanvases = clone.querySelectorAll('canvas');
 
@@ -205,14 +214,17 @@
       }
     });
 
-    // Wait for all images to render
-    await new Promise(resolve => setTimeout(resolve, 800));
+    // Remove hidden sections from clone
+    clone.querySelectorAll('.prediction-section.d-none').forEach(sec => sec.remove());
 
-    // ✅ Generate and download PDF
+    // Wait for all image rendering
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // STEP 3: Generate PDF
     html2pdf()
       .set({
         margin: 5,
-        filename: 'sales_report.pdf',
+        filename: selectedItem ? `sales_report_${selectedItem}.pdf` : 'sales_report_all.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -220,7 +232,7 @@
       .from(clone)
       .save()
       .then(() => {
-        btn.style.display = 'block'; // show button again
+        btn.style.display = 'block';
       })
       .catch(err => {
         console.error('PDF generation failed:', err);
